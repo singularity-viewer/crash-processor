@@ -1,0 +1,8 @@
+*~
+*.bak
+dumps
+incoming_symbols
+logs
+htdocs/lib/logs
+.hg
+
