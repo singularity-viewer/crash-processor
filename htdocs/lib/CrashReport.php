@@ -33,17 +33,24 @@ class CrashReport
             $ret .= htmlentities($f->function);
             if ($f->source_file)
             {
-                if (false === $pos = strpos($f->source_file, "indra"))
-                {
-                    $ret .= " " . $f->source_file;
-                }
-                else
+                if (false !== $pos = strpos($f->source_file, "indra"))
                 {
                     $source = substr($f->source_file, $pos + 6);
                     $source = str_replace("\\", "/", $source);
                     $ret .= " at " . $source;
                     $ret .= " (line {$f->source_line} + {$f->function_offset})";
                     $link = "$urlBase/indra/$source/#L{$f->source_line}";
+                }
+                else if (false !== $pos = strpos($f->source_file, "libraries"))                
+                {
+                    $source = substr($f->source_file, $pos);
+                    $source = str_replace("\\", "/", $source);
+                    $ret .= " at " . $source;
+                    $ret .= " (line {$f->source_line} + {$f->function_offset})";
+                }
+                else
+                {
+                    $ret .= " " . $f->source_file;
                 }
             }
         }
