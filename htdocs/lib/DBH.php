@@ -12,7 +12,7 @@ class DBH
 
 	function log($line)
 	{
-		//return;
+		return;
 		static $f = false;
 		static $failed = false;
 
@@ -54,8 +54,8 @@ class DBH
 		}
 
 
-		$this->query("SET SQL_MODE='TRADITIONAL'");
-        $this->query("SET NAMES 'utf8'");
+		//$this->query("SET SQL_MODE='TRADITIONAL'");
+		$this->query("SET NAMES 'utf8'");
 		return true;
 
 	}

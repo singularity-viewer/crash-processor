@@ -52,5 +52,5 @@ create table reports(
     crash_reason varchar(128),
     crash_address varchar(16),
     crash_thread integer,
-    raw_stacktrace text
+    raw_stacktrace  longtext 
 );

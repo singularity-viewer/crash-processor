@@ -28,6 +28,8 @@ print "Working dir set to " . ReportParser::getWorkPath() . "\n";
 mkdir(ReportParser::getWorkPath());
 chdir(ReportParser::getWorkPath());
 
+$nr = 0;
+
 foreach($reports as $id)
 {
     print "Processing report {$id} \n";
@@ -50,9 +52,14 @@ foreach($reports as $id)
     $crash->init($id, $r, $stacktrace);
     if ($crash->save())
     {
+        $nr++;
         ReportParser::setProcessed($id, 1);
     }
 }
 
 rrmdir(ReportParser::getWorkPath());
 
+if ($nr)
+{
+    IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new crash reports. http://crash.singularityviewer.org/crashes.php ");
+}

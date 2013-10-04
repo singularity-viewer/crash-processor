@@ -4,5 +4,6 @@ dumps
 incoming_symbols
 logs
 htdocs/lib/logs
+htdocs/lib/irc_passwd
 .hg*
 
