@@ -41,7 +41,7 @@ class ReportParser
         $q = kl_str_sql("select * from raw_reports where report_id=!i", $id);
         if (!$res = $DB->query($q) OR !$row = $DB->fetchRow($res))
         {
-            return new stdClass;
+            return array();
         }
         $data = new stdClass;
         $DB->loadFromDbRow($data, $res, $row);

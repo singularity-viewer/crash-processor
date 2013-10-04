@@ -61,5 +61,5 @@ rrmdir(ReportParser::getWorkPath());
 
 if ($nr)
 {
-    IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new crash reports. http://crash.singularityviewer.org/crashes.php ");
+    IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new reports. http://crash.singularityviewer.org/crashes.php ");
 }

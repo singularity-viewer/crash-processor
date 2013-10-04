@@ -69,6 +69,10 @@ Layout::header();
         <th>Crash Reason</th>
         <td><?php echo htmlentities($report->crash_reason . " at " . $report->crash_address . " thread " . $report->crash_thread) ?></td>
     </tr>
+    <tr>
+        <th>Minidump</th>
+        <td><a href="download.php/singularity<?php echo (int)$report->id ?>.dmp?report_id=<?php echo (int)$report->id ?>">Download</a></td>
+    </tr>
     
 </table>
 
