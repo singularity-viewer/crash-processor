@@ -22,6 +22,41 @@ class CrashReport
     public $threads = array();
     public $raw_stacktrace;
     
+    function getTotal()
+    {
+        global $DB;
+        
+        if (!$res = $DB->query("select count(id) as total from reports") OR !$row = $DB->fetchRow($res))
+        {
+            return 0;
+        }
+        else
+        {
+            return $row["total"];
+        }
+    }
+    
+    function getReports($offset = 0, $limit = 100)
+    {
+        global $DB;
+        
+        $ret = array();
+        if (!$res = $DB->query(kl_str_sql("select * from reports order by id desc limit !i offset !i", $limit, $offset)))
+        {
+            return $ret;
+        }
+        
+        while ($row = $DB->fetchRow($res))
+        {
+            $r = new CrashReport;
+            $DB->loadFromDbRow($r, $res, $row);
+            $r->parseStackTrace($r->raw_stacktrace);
+            $ret[] = $r;
+        }
+        
+        return $ret;
+    }
+    
     function delete()
     {
         global $DB;
