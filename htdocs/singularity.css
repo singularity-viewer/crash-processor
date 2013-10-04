@@ -83,6 +83,10 @@ th {
     background: url(images/container-bg.gif) top repeat-x;
 }
 
+.hand {
+    cursor: pointer;
+}
+
 tr.rowhighlight:hover {
     background-color: #2C3737;
 }

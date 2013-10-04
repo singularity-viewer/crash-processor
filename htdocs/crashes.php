@@ -20,7 +20,7 @@ Layout::header();
         <th>Grid (region)</th>
     </tr>
 <?php for ($i=0; $i<count($reports); $i++): ?>
-    <tr class="rowhighlight">
+    <tr class="rowhighlight hand" onclick="window.location.href='report_detail?id=<?php echo $reports[$i]->id ?>'">
         <td><?php echo (int)$reports[$i]->id ?></td>
         <td><?php echo htmlspecialchars($reports[$i]->client_channel . " " . $reports[$i]->client_version) ?></td>
         <td><?php echo htmlspecialchars($reports[$i]->os) ?></td>

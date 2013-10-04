@@ -22,6 +22,38 @@ class CrashReport
     public $threads = array();
     public $raw_stacktrace;
     
+    function htmlFrame($f)
+    {
+        static $urlBase = "https://github.com/singularity-viewer/SingularityViewer/blob/master";
+        
+        $ret = "";
+        $link = "";
+        if ($f->function)
+        {
+            $ret .= htmlentities($f->function);
+            if ($f->source_file)
+            {
+                if (false === $pos = strpos($f->source_file, "indra"))
+                {
+                    $ret .= " " . $f->source_file;
+                }
+                else
+                {
+                    $source = substr($f->source_file, $pos + 6);
+                    $source = str_replace("\\", "/", $source);
+                    $ret .= " at " . $source;
+                    $ret .= " (line {$f->source_line} + {$f->function_offset})";
+                    $link = "$urlBase/indra/$source/#L{$f->source_line}";
+                }
+            }
+        }
+        
+        if ($link)
+        {
+            $ret = '<a href="' . $link . '">' . $ret . '</a>';
+        }
+        return $ret;
+    }
     function getTotal()
     {
         global $DB;
@@ -57,6 +89,27 @@ class CrashReport
         return $ret;
     }
     
+    function getReport($id)
+    {
+        global $DB;
+        
+        $ret = array();
+        if (!$res = $DB->query(kl_str_sql("select * from reports where id=!i", $id)))
+        {
+            return null;
+        }
+        
+        if ($row = $DB->fetchRow($res))
+        {
+            $r = new CrashReport;
+            $DB->loadFromDbRow($r, $res, $row);
+            $r->parseStackTrace($r->raw_stacktrace);
+            return $r;
+        }
+        
+        return null;
+    }
+
     function delete()
     {
         global $DB;
