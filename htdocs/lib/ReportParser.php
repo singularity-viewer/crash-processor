@@ -33,18 +33,96 @@ require_once SITE_ROOT.'/lib/llsd_decode.php';
 
 class ReportParser
 {
+    static $extracted = array();
+    
     function parse($id)
     {
         global $DB;
         $q = kl_str_sql("select * from raw_reports where report_id=!i", $id);
         if (!$res = $DB->query($q) OR !$row = $DB->fetchRow($res))
         {
-            return;
+            return new stdClass;
         }
         $data = new stdClass;
         $DB->loadFromDbRow($data, $res, $row);
         $data->report = llsd_decode($data->raw_data);
+        $data->report["reported"] = $data->reported;
         unset($data->raw_data);
-        return $data;
+        
+        if ($client = $data->report["DebugLog"]["ClientInfo"])
+        {
+            //var_dump($client);
+            $data->report["clientVersion"] = $client["MajorVersion"] . "." . $client["MinorVersion"] . "." . $client["PatchVersion"] . "." .$client["BuildVersion"];
+            $data->report["clientChannel"] = str_replace(" ", "", $client["Name"]);
+        }
+        
+        // $data->report["raw"] = $row;
+        return $data->report;
+    }
+    
+    function setProcessed($id, $status)
+    {
+        global $DB;
+        $ret = array();
+        $q = kl_str_sql("update raw_reports set processed=!i where report_id=!i", $status, $id);
+        
+        if ($res = $DB->query($q))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    function getUnprocessedIDs()
+    {
+        global $DB;
+        $ret = array();
+        $q = kl_str_sql("select report_id from raw_reports where processed=!i", 0);
+        
+        if (!$res = $DB->query($q))
+        {
+            return $ret;
+        }
+        
+        while ($row = $DB->fetchRow($res))
+        {
+            $ret[] = (int)$row["report_id"];
+        }
+        
+        return $ret;
+    }
+    
+    function getWorkPath()
+    {
+        static $p = "";
+        
+        if ($p) return $p;
+        
+        return $p = sys_get_temp_dir() . "/extract-syms-" . (string)getmypid();
+    }
+    
+    function getStackTrace($prefix, $dump)
+    {
+        if (!$dump || !($data = $dump->getData())) return;
+        file_put_contents(self::getWorkPath() . "/working.dmp", $data);
+        
+        $match = SITE_ROOT . "/../incoming_symbols/$prefix-symbols-*.tar.bz2";
+
+        foreach(glob($match) as $file)
+        {
+            if (!in_array($file, self::$extracted))
+            {
+                self::$extracted[] = $file;
+                print "Unpacking $file\n";
+                shell_exec("tar xjf " . escapeshellcmd($file));
+            }
+        }
+        
+        $cmd = "minidump_stackwalk -m " . self::getWorkPath() . "/working.dmp "  . self::getWorkPath();
+        print "Executing: $cmd\n";
+        return shell_exec($cmd);
     }
 }
