@@ -5,7 +5,6 @@ require_once SITE_ROOT . "/lib/init.php";
 $S->requireUser();
 
 $report = CrashReport::getReport((int)$_GET["id"]);
-
 if (!$report)
 {
     Layout::header();
@@ -14,6 +13,9 @@ if (!$report)
     return;    
 }
 
+
+$full = ReportParser::parse($report->id);
+//print_r (array_keys($full));
 
 Layout::header();
 ?>
@@ -110,6 +112,30 @@ Layout::header();
     </tr>
 <?php endfor ?>
 </table>
+
+
+<?php if (strlen($full["StatsLog"])): ?>
+<h3>Stats</h3>
+<pre>
+<?php echo htmlentities($full["StatsLog"]) ?>
+</pre>
+<?php endif ?>
+ 
+
+<?php if (strlen($full["SecondLifeLog"])): ?>
+<h3>Log</h3>
+<pre>
+<?php echo htmlentities($full["SecondLifeLog"]) ?>
+</pre>
+<?php endif ?>
+
+
+<?php if (strlen($full["SettingsXml"])): ?>
+<h3>Settings</h3>
+<pre>
+<?php echo htmlentities($full["SettingsXml"]) ?>
+</pre>
+<?php endif ?>
 
 <?php
 Layout::footer();
