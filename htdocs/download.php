@@ -14,4 +14,5 @@ if (!$miniDump || !($miniDump->getData()))
     return;    
 }
 
+header("Content-Type: application/octet-stream");
 http::sendDownload("singularity" . ((int)$_GET["report_id"]) . ".dmp", $miniDump->getData());
