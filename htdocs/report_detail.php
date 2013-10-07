@@ -19,9 +19,31 @@ $full = ReportParser::parse($report->id);
 
 Layout::header();
 ?>
+<script>
+    $(function() {
+        $( "#tabs" ).tabs({ active: 1 });
+        $("div.ui-tabs-panel").css('padding','0px');
+    });
+</script>
 
-<h2>Report Details</h2>
+<div id="tabs">
+<ul>
+    <li><a href="#tabs-0">Details</a></li>
+    <li><a href="#tabs-1">Stack</a></li>
+    <li><a href="#tabs-2">Modules</a></li>
+<?php if (strlen($full["StatsLog"])): ?>
+    <li><a href="#tabs-3">Stats</a></li>
+<?php endif ?>
+<?php if (strlen($full["SecondLifeLog"])): ?>
+    <li><a href="#tabs-4">Log</a></li>
+<?php endif ?>
+<?php if (strlen($full["SettingsXml"])): ?>
+    <li><a href="#tabs-5">Settings</a></li>
+<?php endif ?>
+</ul>
 
+<!-- Details tab -->
+<div id="tabs-0">
 <table>
     <tr>
         <th>ID</th>
@@ -75,31 +97,41 @@ Layout::header();
         <th>Minidump</th>
         <td><a href="download.php/singularity<?php echo (int)$report->id ?>.dmp?report_id=<?php echo (int)$report->id ?>">Download</a></td>
     </tr>
-    
 </table>
+</div>
+<!-- Details tab -->
 
-<h3>Stack</h3>
-
+<!-- Stacks tab -->
+<div id="tabs-1">
+<script>
+$(function() {
+    $( "#accordion" )
+        .accordion({ collapsible: true, animate: false, heightStyle: "content", active: <?php echo $report->crash_thread ?> });
+    $("div.ui-accordion-content").css('padding','0px');
+ });
+</script>
+<div id="accordion">
+ 
 <?php for ($threadID = 0; $threadID < count($report->threads); $threadID++): ?>
-<table width="99%">
-    <tr>
-        <th width="20%">Thread <?php echo htmlentities($threadID . ($threadID == $report->crash_thread ? " (crashed)" : "")) ?></th>
-        <th>Function</th>
-    </tr>  
-
+<h3>Thread <?php echo htmlentities($threadID . ($threadID == $report->crash_thread ? " (crashed)" : "")) ?></h3>
+<div>
+<table width="100%">
 <?php for ($frameID = 0; $frameID < count($report->threads[$threadID]->frames); $frameID++): $f = $report->threads[$threadID]->frames[$frameID]; ?>
-    <tr class="rowhighlight">
-        <td><?php echo htmlentities($f->module) ?></td>
-        <td><?php echo CrashReport::htmlFrame($f) ?></td>
-    </tr>  
+    <tr>
+        <td width="5%" style="text-align: right;"><?php echo $frameID ?></td>
+        <td width="20%"><?php echo htmlentities($f->module) ?></td>
+        <td width="75%"><?php echo CrashReport::htmlFrame($f) ?></td>
+    </tr>
 <?php endfor ?>
-
 </table>
-<br/><br/>
+</div>
 <?php endfor ?>
+</div>
+</div>
+<!-- Stacks tab -->
 
-
-<h3>Loaded Modules</h3>
+<!-- Modules tab -->
+<div class="jtable" id="tabs-2">
 <table>
     <tr>
         <th>Name</th>
@@ -112,30 +144,41 @@ Layout::header();
     </tr>
 <?php endfor ?>
 </table>
+</div>
+<!-- Modules tab -->
 
 
+<!-- Stats tab -->
 <?php if (strlen($full["StatsLog"])): ?>
-<h3>Stats</h3>
+<div id="tabs-3">
 <pre>
 <?php echo htmlentities($full["StatsLog"]) ?>
 </pre>
+</div>
 <?php endif ?>
- 
+<!-- Stats tab -->
 
+<!-- Log tab -->
 <?php if (strlen($full["SecondLifeLog"])): ?>
-<h3>Log</h3>
+<div id="tabs-4">
 <pre>
 <?php echo htmlentities($full["SecondLifeLog"]) ?>
 </pre>
+</div>
 <?php endif ?>
+<!-- Log tab -->
 
-
+<!-- Settings tab -->
 <?php if (strlen($full["SettingsXml"])): ?>
-<h3>Settings</h3>
+<div id="tabs-5">
 <pre>
 <?php echo htmlentities($full["SettingsXml"]) ?>
 </pre>
+</div>
 <?php endif ?>
+<!-- Settings tab -->
+
+</div>
 
 <?php
 Layout::footer();

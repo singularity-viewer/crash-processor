@@ -36,7 +36,8 @@ Layout::header();
 ?>
 
 <h3>User Accounts</h3>
-<table>
+
+<table class="jtable">
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -45,8 +46,8 @@ Layout::header();
         <th>Actions</th>
     </tr>
 <?php for ($i=0; $i<count($users); $i++): ?>
-    <tr class="rowhighlight">
-        <td><?php echo (int)$users[$i]->user_id ?></td>
+    <tr>
+        <td style="text-align: right;"><?php echo (int)$users[$i]->user_id ?></td>
         <td><?php echo htmlentities($users[$i]->name); ?></td>
         <td><?php echo htmlentities($users[$i]->email); ?></td>
         <td><?php echo $users[$i]->isAdmin() ? "Admin" : ($users[$i]->isAllowed() ? "Granted" : "No");  ?></td>
@@ -57,14 +58,15 @@ Layout::header();
         $action = $users[$i]->isAllowed() ? "revoke" : "grant";
         $url = URL_ROOT . "/users.php?action=$action&id=" . (int)$users[$i]->user_id;
         $delete = URL_ROOT . "/users.php?action=remove&id=" . (int)$users[$i]->user_id;
-        print "<a href=\"{$url}\">{$action}&nbsp;access</a>,&nbsp;&nbsp;";
-        print "<a href=\"{$delete}\" title=\"Caution: completely deletes information about this user.\" onclick=\"return confirm('Are you sure you want to completely remove this account? Just revoking access works too, and they can create it again by logging with their Google credentials.');\">delete account</a>";
+        print "<a class=\"toolbarbutton\" href=\"{$url}\">{$action}</a>&nbsp;&nbsp;";
+        print "<a class=\"toolbarbutton\" href=\"{$delete}\" title=\"Caution: completely deletes information about this user.\" onclick=\"return confirm('Are you sure you want to completely remove this account? Just revoking access works too, and they can create it again by logging with their Google credentials.');\">delete account</a>";
     }
 ?>
         </td>
     </tr>
 <?php endfor ?>
 </table>
+
 <?php
 Layout::footer();
 

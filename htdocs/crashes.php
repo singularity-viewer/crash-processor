@@ -11,7 +11,7 @@ Layout::header();
 
 <p>Reports <strong><?php echo $total ?></strong></p>
 
-<table>
+<table width="100%" class="jtable">
     <tr>
         <th>ID</th>
         <th>Version</th>

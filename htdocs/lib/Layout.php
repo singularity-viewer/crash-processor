@@ -109,26 +109,63 @@ class Layout
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="<?php print URL_ROOT ?>/css/singularity/jquery-ui-1.10.3.custom.min.css"/>
     <link rel="stylesheet" type="text/css" href="<?php print URL_ROOT ?>/singularity.css"/>
     <link rel="shortcut icon" href="<?php print IMG_ROOT ?>/favicon.ico" type="image/x-icon" />
-    <title>Singularity Viewer Automated Build System</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <title>Automated Crash Report Processing System</title>
 
-<!--script type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
+$(function() {
+    $( ".toolbarbutton" ).button();
+    $( ".rowhighlight" )
+});
+
+$().ready(function(){
+  
+  $(".jtable th").each(function(){
+  $(this).addClass("ui-widget-header");
+  });
+
+ $(".jtable td").each(function(){
+ 
+  $(this).addClass("ui-widget-content");
+ 
+  });
+ $(".jtable tr").hover(
+     function()
+     {
+      $(this).children("td").addClass("ui-state-hover");
+     },
+     function()
+     {
+      $(this).children("td").removeClass("ui-state-hover");
+     }
+    );
+ });
+
 //]]>
-</script-->
+</script>
 
   </head>
   <body>
-      <div id="everything">
-      <div id="page-wrapper">
-      <div id="header"></div>
-      <div class="container"><a href="<?php print URL_ROOT ?>" style="font-size: 20px;">Automated Crash Report Processing System</a><br/>
-	  <?php for ($i=count($menu) - 1; $i>=0; $i--): ?>
-		<div class="menuitem"><a href="<?php echo $menu[$i]->link; ?>"><?php echo htmlspecialchars($menu[$i]->label) ?></a></div>
-	  <?php endfor ?>
-	  <br/><br/>
-  
+    <div style="padding-top:20px;">
+      <div style="display: inline-block;">
+	<a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="150px" height="150px"/></a>
+      </div>
+      <div style="display: inline-block;color: #eee; padding: 55px 0 0 30px; vertical-align: top;">
+	<a href="<?php echo URL_ROOT ?>" style="font-size: 4em; font-weight: bold;">Sigularity Viewer</a>
+	<br/>
+	<span style="font-size: 1.6em;">Automated Crash Report Processing</span>
+      </div>
+    </div>
+    <div id="menubar" style="text-align: right; margin-top:10px; margin-bottom:10px; padding: 5px;" class="ui-widget-header ui-corner-all">
+      <?php for ($i=0; $i<count($menu); $i++): ?>
+	<a class="toolbarbutton" href="<?php echo $menu[$i]->link; ?>"><?php echo htmlspecialchars($menu[$i]->label) ?></a>
+      <?php endfor ?>
+    </div>
 
 <?php
   }
@@ -136,18 +173,17 @@ class Layout
   function footer()
   {
   { ?>
-       </div><!-- container -->
-       <div class="container">
-        <table style="width: 100%; border: none; padding: 0;"><tr>
-         <td class="bottom-links"><a href="http://www.singularityviewer.org/">Singularity Main Site</a></td>
-         <td class="bottom-links"><a href="http://www.singularityviewer.org/about">About</a></td>
-         <td class="bottom-links"><a href="http://code.google.com/p/singularity-viewer/issues/">Issue Tracker</a></td>
-         <td class="bottom-links"><a href="https://github.com/singularity-viewer/SingularityViewer">Source Tracker</a></td>
-      <td width="50%" style="text-align: right;">&copy; 2013 Singularity Viewer Project</td>
-        </tr></table>
+       <div style="margin-top:10px; padding: 5px;" class="ui-widget-header ui-corner-all">
+	 <div style="float: left; padding: 4px;">
+	    &copy; 2013 Singularity Viewer Project
+	 </div>
+	 <div style="text-align: right;">
+	    <a class="toolbarbutton" href="http://www.singularityviewer.org/">Singularity Main Site</a>
+	    <a class="toolbarbutton" href="http://www.singularityviewer.org/about">About</a>
+	    <a class="toolbarbutton" href="http://code.google.com/p/singularity-viewer/issues/">Issue Tracker</a>
+	    <a class="toolbarbutton" href="https://github.com/singularity-viewer/SingularityViewer">Source Tracker</a>
+	 </div>
        </div> 
-      </div><!-- everything -->
-    </div><!-- page-wrapper -->
   </body>
 </html>
   
