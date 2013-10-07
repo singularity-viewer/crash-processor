@@ -156,7 +156,7 @@ $().ready(function(){
 	<a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="150px" height="150px"/></a>
       </div>
       <div style="display: inline-block;color: #eee; padding: 55px 0 0 30px; vertical-align: top;">
-	<a href="<?php echo URL_ROOT ?>" style="font-size: 4em; font-weight: bold;">Sigularity Viewer</a>
+	<a href="<?php echo URL_ROOT ?>" style="font-size: 4em; font-weight: bold;">Singularity Viewer</a>
 	<br/>
 	<span style="font-size: 1.6em;">Automated Crash Report Processing</span>
       </div>

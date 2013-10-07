@@ -4,9 +4,12 @@ define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 $S->requireUser();
 
-$total = CrashReport::getTotal();
-$reports = CrashReport::getReports();
+$filter = new SearchFilter();
+$total = CrashReport::getTotal($filter);
+$reports = CrashReport::getReports($filter);
 Layout::header();
+
+$filter->render();
 ?>
 
 <p>Reports <strong><?php echo $total ?></strong></p>

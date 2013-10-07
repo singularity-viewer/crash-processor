@@ -61,11 +61,12 @@ class CrashReport
         }
         return $ret;
     }
-    function getTotal()
+    function getTotal($filter)
     {
         global $DB;
         
-        if (!$res = $DB->query("select count(id) as total from reports") OR !$row = $DB->fetchRow($res))
+        $where = $filter->getWhere();
+        if (!$res = $DB->query("select count(id) as total from reports $where") OR !$row = $DB->fetchRow($res))
         {
             return 0;
         }
@@ -75,12 +76,12 @@ class CrashReport
         }
     }
     
-    function getReports($offset = 0, $limit = 100)
+    function getReports($filter)
     {
         global $DB;
         
         $ret = array();
-        if (!$res = $DB->query(kl_str_sql("select * from reports order by id desc limit !i offset !i", $limit, $offset)))
+        if (!$res = $DB->query("select * from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset)))
         {
             return $ret;
         }
