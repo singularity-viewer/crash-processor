@@ -15,7 +15,7 @@ class SearchFilter
     public $offset = 0;
     public $page = 0;
     
-    function SearchFilter()
+    function __construct()
     {
         if (in_array($_GET["sort_by"], self::$sort_keys))
         {
