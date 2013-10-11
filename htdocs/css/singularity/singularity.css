@@ -70,6 +70,12 @@ table.jtable a:visited {
         color: #888;
 }
 
+.filterelem {
+    padding: 10px;
+    vertical-align: top;
+    display: inline-block;
+}
+
 
 .hand {
     cursor: pointer;

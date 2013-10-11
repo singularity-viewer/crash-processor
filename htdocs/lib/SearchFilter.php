@@ -6,6 +6,7 @@ class SearchFilter
     public $chan;
     public $version;
     public $grid;
+    public $stacktrace;
     public $sort_by;
     public $sort_order;
     public static $sort_keys = array("date", "os", "version", "grid");
@@ -50,6 +51,11 @@ class SearchFilter
         {
             $this->grid = $_GET["grid"];
         }
+
+        if (strlen($_GET["stacktrace"]))
+        {
+            $this->stacktrace = $_GET["stacktrace"];
+        }
     }
     
     function getWhere()
@@ -59,6 +65,16 @@ class SearchFilter
         if ($this->version) $cond[] = kl_str_sql("client_version=!s", $this->version);
         if ($this->chan) $cond[] = kl_str_sql("client_channel=!s", $this->chan);
         if ($this->grid) $cond[] = kl_str_sql("grid=!s", $this->grid);
+        
+        if ($this->stacktrace)
+        {
+            $parts = preg_split("/\\s+/", trim($this->stacktrace));
+            foreach($parts as $part)
+            {
+                $cond[] = kl_str_sql("raw_stacktrace like !s", "%{$part}%");
+            }
+        }
+        
         if (!count($cond)) return "";
         return "where " . implode(" and ", $cond);
     }
@@ -122,8 +138,8 @@ class SearchFilter
 <div style="display: inline-block;" class="ui-widget ui-corner-all ui-widget-content">
     <div class="ui-widget-header" style="padding: 5px">Filter</div>
 
-    <div style="display: inline-block;">
-        <div class="radio" style="padding: 10px">
+    <div class="filterelem">
+        <div class="radio">
             Channel<br />
             <input type="radio" id="chan1" name="chan" value="" <?php echo !$this->chan ? 'checked="checked"' : '' ?>/><label for="chan1">All</label>
             <input type="radio" id="chan2" name="chan" value="Singularity" <?php echo $this->chan == "Singularity" ? 'checked="checked"' : '' ?>/><label for="chan2">Singularity</label>
@@ -131,9 +147,9 @@ class SearchFilter
         </div>
     </div>
     
-    <div style="display: inline-block;" style="padding: 10px">
+    <div class="filterelem">
         Version<br/>
-        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px;"> 
+        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px; margin-top: 3px;"> 
             <option value="" <?php echo !$this->version ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($ver); $i++)
@@ -145,8 +161,8 @@ for($i = 0; $i < count($ver); $i++)
         </select>
     </div>
 
-    <div style="display: inline-block;">
-        <div class="radio" style="padding: 10px">
+    <div class="filterelem">
+        <div class="radio">
             Operating system<br />
             <input type="radio" id="os_all" name="os" value="" <?php echo !$this->os ? 'checked="checked"' : '' ?>/><label for="os_all">All</label>
             <input type="radio" id="os_windows" name="os" value="Windows NT" <?php echo $this->os == "Windows NT" ? 'checked="checked"' : '' ?>/><label for="os_windows">Windows</label>
@@ -155,9 +171,9 @@ for($i = 0; $i < count($ver); $i++)
         </div>
     </div>
 
-    <div style="display: inline-block;">
+    <div class="filterelem">
         Grid<br/>
-        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px; margin: 0px 20px 0 0; "> 
+        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px; margin-top: 3px;"> 
             <option value="" <?php echo !$this->grid ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($grids); $i++)
@@ -169,6 +185,11 @@ for($i = 0; $i < count($grids); $i++)
         </select>
     </div>
 
+    <div class="filterelem">
+        Stacktrace contains<br/>
+        <input class="ui-widget-content ui-button" type="text" name="stacktrace" value="<?php echo htmlentities($this->stacktrace) ?>" style="text-align: left; padding-left: 4px;" />
+        <input class="ui-widget-content toolbarbutton" type="submit" name="do_search" value="Search" />
+    </div>
 </div>
 </form>
         
