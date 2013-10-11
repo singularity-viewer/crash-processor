@@ -61,5 +61,6 @@ rrmdir(ReportParser::getWorkPath());
 
 if ($nr)
 {
+    Memc::flush();
     IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new reports. http://crash.singularityviewer.org/crashes.php ");
 }

@@ -66,12 +66,16 @@ class CrashReport
         global $DB;
         
         $where = $filter->getWhere();
-        if (!$res = $DB->query("select count(id) as total from reports $where") OR !$row = $DB->fetchRow($res))
+        $q = "select count(id) as total from reports $where";
+        if (false !== $cached = Memc::getq($q)) return $cached;
+        
+        if (!$res = $DB->query($q) OR !$row = $DB->fetchRow($res))
         {
             return 0;
         }
         else
         {
+            Memc::setq($q, $row["total"]);
             return $row["total"];
         }
     }
@@ -81,7 +85,10 @@ class CrashReport
         global $DB;
         
         $ret = array();
-        if (!$res = $DB->query("select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset)))
+        $q = "select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset);
+        if (false !== $cached = Memc::getq($q)) return $cached;
+        
+        if (!$res = $DB->query($q))
         {
             return $ret;
         }
@@ -93,6 +100,7 @@ class CrashReport
             $ret[] = $r;
         }
         
+        Memc::setq($q, $ret);
         return $ret;
     }
     

@@ -15,6 +15,8 @@ function __autoload($class)
 	require_once(SITE_ROOT . '/lib/' . $class . '.php');
 }
 
+Memc::init();
+
 /* Directory relative to server root
  * No leading or trailing slash.
  * Example: http://www.example.com/applications/app1/
@@ -67,7 +69,7 @@ if (!$DB->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
 	die();
 }
 
-Option::init();
+//Option::init();
 
 $S = new Session();
 if (!defined('NO_SESSION') && PHP_SAPI != "cli") {

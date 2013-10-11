@@ -40,7 +40,7 @@ class DBH
 		$this->db_user = $db_user;
 		$this->db_host = $db_host;
 
-		$this->dbh = @mysql_connect($db_host, $db_user, $db_pass);
+		$this->dbh = @mysql_pconnect($db_host, $db_user, $db_pass);
 
 		if (!$this->dbh) {
 			DBH::log("[error] connection to database failed");

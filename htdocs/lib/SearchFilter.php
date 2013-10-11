@@ -86,6 +86,8 @@ class SearchFilter
         $ret = array();
         $where = $this->chan ? kl_str_sql("where client_channel=!s", $this->chan) : '';
         $q = "select distinct client_version from reports $where order by client_version desc";
+        if (false !== $cached = Memc::getq($q)) return $cached;
+        
         if (!$res = $DB->query($q))
         {
             return $ret;
@@ -96,6 +98,7 @@ class SearchFilter
             $ret[] = $row["client_version"];
         }
         
+        Memc::setq($q, $ret);
         return $ret;
     }
     
@@ -105,6 +108,8 @@ class SearchFilter
         
         $ret = array();
         $q = "select distinct grid from reports order by grid asc";
+        if (false !== $cached = Memc::getq($q)) return $cached;
+        
         if (!$res = $DB->query($q))
         {
             return $ret;
@@ -115,6 +120,7 @@ class SearchFilter
             $ret[] = $row["grid"];
         }
         
+        Memc::setq($q, $ret);
         return $ret;
     }
 
@@ -135,7 +141,7 @@ class SearchFilter
 </script>
 
 <form method="get">
-<div style="display: inline-block;" class="ui-widget ui-corner-all ui-widget-content">
+<div class="ui-widget ui-corner-all ui-widget-content">
     <div class="ui-widget-header" style="padding: 5px">Filter</div>
 
     <div class="filterelem">

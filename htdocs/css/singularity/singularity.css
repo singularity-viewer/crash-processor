@@ -15,6 +15,12 @@ body {
     color: #a0a0a0;
 }
 
+@media screen and (max-width: 768px) {
+    body {
+	padding: 0px;
+    }
+}
+
 div {
     display: block;
     padding: 0;
