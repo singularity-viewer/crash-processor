@@ -47,6 +47,30 @@ td, th {
     border: none;
 }
 
+tr.rowhighlight a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+table.jtable tr:hover, table.jtable th {
+	background: #2b3233 url(images/ui-bg_highlight-hard_20_2b3233_1x100.png) 50% 50% repeat-x;
+	color: #ffffff;
+}
+
+table.jtable {
+        border-spacing: 0px;
+	border-collapse:collapse;
+	border: 1px solid #555555;
+	background: #1e1e1e url(images/ui-bg_flat_25_1e1e1e_40x100.png) 50% 50% repeat-x;
+	color: #c5c5c5;
+}
+
+table.jtable a:visited {
+        color: #888;
+}
+
+
 .hand {
     cursor: pointer;
 }
@@ -56,8 +80,4 @@ pre {
     font-size: 1.2em;
     white-space: pre-wrap;
     word-wrap: break-word;
-}
-
-.jtable tr .ui-state-hover {
-font-weight: normal;
 }

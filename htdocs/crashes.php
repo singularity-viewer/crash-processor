@@ -4,6 +4,11 @@ define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 $S->requireUser();
 
+function lk($id, $txt)
+{
+    echo '<a href="'. URL_ROOT . '/report_detail.php?id=' . $id . '">' . htmlentities($txt) . '</a>';
+}
+
 $filter = new SearchFilter();
 $total = CrashReport::getTotal($filter);
 $reports = CrashReport::getReports($filter);
@@ -23,12 +28,12 @@ $filter->render();
         <th>Grid (region)</th>
     </tr>
 <?php for ($i=0; $i<count($reports); $i++): ?>
-    <tr class="rowhighlight hand" onclick="window.location.href='report_detail?id=<?php echo $reports[$i]->id ?>'">
-        <td><?php echo (int)$reports[$i]->id ?></td>
-        <td><?php echo htmlspecialchars($reports[$i]->client_channel . " " . $reports[$i]->client_version) ?></td>
-        <td><?php echo htmlspecialchars($reports[$i]->os) ?></td>
-        <td><?php echo htmlspecialchars($reports[$i]->gpu) ?></td>
-        <td><?php echo htmlspecialchars($reports[$i]->grid . " (" . $reports[$i]->region . ")") ?></td>
+    <tr class="rowhighlight">
+        <td><?php lk($reports[$i]->id, $reports[$i]->id) ?></td>
+        <td><?php lk($reports[$i]->id, $reports[$i]->client_channel . " " . $reports[$i]->client_version) ?></td>
+        <td><?php lk($reports[$i]->id, $reports[$i]->os) ?></td>
+        <td><?php lk($reports[$i]->id, $reports[$i]->gpu) ?></td>
+        <td><?php lk($reports[$i]->id, $reports[$i]->grid . " (" . $reports[$i]->region . ")") ?></td>
     </tr>
 <?php endfor ?>
 </table>
