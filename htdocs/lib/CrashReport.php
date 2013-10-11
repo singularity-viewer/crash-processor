@@ -76,12 +76,12 @@ class CrashReport
         }
     }
     
-    function getReports($filter)
+    function getReports($filter, $fields = "id, reported, client_version, client_channel, os, gpu, grid, region")
     {
         global $DB;
         
         $ret = array();
-        if (!$res = $DB->query("select * from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset)))
+        if (!$res = $DB->query("select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset)))
         {
             return $ret;
         }
@@ -90,7 +90,6 @@ class CrashReport
         {
             $r = new CrashReport;
             $DB->loadFromDbRow($r, $res, $row);
-            $r->parseStackTrace($r->raw_stacktrace);
             $ret[] = $r;
         }
         

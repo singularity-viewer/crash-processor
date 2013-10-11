@@ -114,7 +114,7 @@ class Layout
     <link rel="shortcut icon" href="<?php print IMG_ROOT ?>/favicon.ico" type="image/x-icon" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <title>Automated Crash Report Processing System</title>
+    <title>Singularity Viewer - Automated Crash Report Processing System</title>
 
 <script type="text/javascript">
 //<![CDATA[
