@@ -57,14 +57,14 @@ if (!defined('IMG_ROOT')) {
 }
 
 
-$DB = new DBH();
+$DB = DBH::getInstance();
 
 $DB_NAME = "singucrash";
 $DB_USER = 'singucrash';
 $DB_PASS = '-*-secrit-*-';
 $DB_HOST = 'localhost';
 
-if (!$DB->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
+if (!DBH::$db->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
 	echo "System is down for mantainence. Please try again later.";
 	die();
 }

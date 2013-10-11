@@ -24,7 +24,6 @@ class User
 	 */
 	public function save()
 	{
-		global $DB;
 		$query = kl_str_sql('INSERT INTO users(
 		name,
 		email,
@@ -41,17 +40,16 @@ class User
 		$this->is_allowed
 		);
 
-		if (!$res = $DB->query($query)) {
+		if (!$res = DBH::$db->query($query)) {
 			return false;
 		} else {
-			$this->user_id = $DB->insertID();
+			$this->user_id = DBH::$db->insertID();
 			return $this->user_id;
 		}
 	}
 
 	public function update()
 	{
-		global $DB;
 		$query = kl_str_sql('
 		UPDATE users SET 
 		name=!s,
@@ -70,7 +68,7 @@ class User
 		$this->user_id
 		);
 //echo $query;
-		if (!$DB->query($query)) {
+		if (!DBH::$db->query($query)) {
 			return false;
 		} else {
 			return true;
@@ -85,19 +83,17 @@ class User
 	 */
 	public static function get($id)
 	{
-		global $DB;
-
 		if (is_null($id)) {
 			return new User();
 		}
 		
 		$query = kl_str_sql("SELECT * FROM users WHERE user_id=!i",$id);
 
-		if(!$res = $DB->query($query) OR !$row = $DB->fetchRow($res)) {
+		if(!$res = DBH::$db->query($query) OR !$row = DBH::$db->fetchRow($res)) {
 			return false;
 		} else {
 			$user = new User();
-			$DB->loadFromDbRow($user, $res, $row);
+			DBH::$db->loadFromDbRow($user, $res, $row);
 			return $user;
 		}
 	}
@@ -124,15 +120,13 @@ class User
 	 */
 	public static function getByLogin($username)
 	{
-		global $DB;
-		
 		$query = kl_str_sql('SELECT * FROM users WHERE login=!s', $username);
 
-		if(!$res = $DB->query($query) OR !$row = $DB->fetchRow($res)) {
+		if(!$res = DBH::$db->query($query) OR !$row = DBH::$db->fetchRow($res)) {
 			return false;
 		} else {
 			$user = new User();
-			$DB->loadFromDbRow($user, $res, $row);
+			DBH::$db->loadFromDbRow($user, $res, $row);
 			return $user;
 		}
 	}
@@ -145,14 +139,12 @@ class User
 	 */
 	public static function getByEmail($email)
 	{
-		global $DB;
-
 		$query = kl_str_sql('SELECT * FROM users WHERE cust_id!=1 AND email=!s', $email);
-		if (!$res = $DB->query($query) OR !$row = $DB->fetchRow($res)) {
+		if (!$res = DBH::$db->query($query) OR !$row = DBH::$db->fetchRow($res)) {
 			return false;
 		} else {
 			$user = new User();
-			$DB->loadFromDbRow($user, $res, $row);
+			DBH::$db->loadFromDbRow($user, $res, $row);
 			return $user;
 		}
 	}
@@ -164,16 +156,14 @@ class User
 	 */
 	public static function getAll()
 	{
-		global $DB;
-
 		$query = kl_str_sql('SELECT * FROM users ORDER BY is_admin DESC, is_allowed DESC, user_id ASC');
-		if(!$res = $DB->query($query)) {
+		if(!$res = DBH::$db->query($query)) {
 			return false;
 		} else {
 			$retval=array();
-			while($row = $DB->fetchRow($res)) {
+			while($row = DBH::$db->fetchRow($res)) {
 				$tmp = new User();
-				$DB->loadFromDbRow($tmp, $res, $row);
+				DBH::$db->loadFromDbRow($tmp, $res, $row);
 				$retval[] = $tmp;
 			}
 			return $retval;
@@ -181,10 +171,9 @@ class User
 	}
 
 	function delete(){
-		global $DB;
 		$query=kl_str_sql("DELETE FROM users WHERE user_id=!i",$this->user_id);
 		//echo $query;
-		if(!$res=$DB->query($query)){
+		if(!$res=DBH::$db->query($query)){
 			return false;
 		}
 		else{

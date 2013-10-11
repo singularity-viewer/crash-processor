@@ -38,12 +38,10 @@ class Option
 	 */
 	public static function init()
 	{
-		global $DB;
-		
-		if(!$result = $DB->query("SELECT * FROM options")) {
+		if(!$result = DBH::$db->query("SELECT * FROM options")) {
 			return false;
 		} else {
-			while ($row = $DB->fetchRow($result)) {
+			while ($row = DBH::$db->fetchRow($result)) {
 				self::$optionArray[$row['name']] = $row['value'];
 			}
 			return true;
@@ -59,9 +57,8 @@ class Option
 	 */
 	public static function update($name, $value)
 	{
-		global $DB;		
-		$result = $DB->query(kl_str_sql("DELETE FROM options WHERE name=!s", $name));	
-		$result = $DB->query(kl_str_sql("INSERT INTO options (name, value) VALUES(!s,!s)", $name,$value ));	
+		$result = DBH::$db->query(kl_str_sql("DELETE FROM options WHERE name=!s", $name));	
+		$result = DBH::$db->query(kl_str_sql("INSERT INTO options (name, value) VALUES(!s,!s)", $name,$value ));	
 		self::$optionArray[$name] = $value;
 		return $result;
 	}

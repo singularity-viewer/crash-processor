@@ -66,12 +66,10 @@ class Session
 
 	function add()
 	{
-		global $DB;
-
 		$this->sid = md5(uniqid(rand()));
 		$this->expires=time() + $this->timeout;
 
-		$DB->query(kl_str_sql("DELETE from session where sid=!s", $this->sid));
+		DBH::$db->query(kl_str_sql("DELETE from session where sid=!s", $this->sid));
 		$q = kl_str_sql("INSERT into session (sid, user_id, authenticated, expires, persist) ".
 		"values (!s, !i, !i, !t, !s)",
 		$this->sid,
@@ -81,7 +79,7 @@ class Session
 		$this->ser_persist
 		);
 
-		if ($DB->query($q)) {
+		if (DBH::$db->query($q)) {
 			setcookie($this->cookie, $this->sid, NULL, '/' . REL_DIR);
 			return true;
 		} else {
@@ -91,12 +89,10 @@ class Session
 
 	function update()
 	{
-		global $DB;
-
 		$q = kl_str_sql('UPDATE session SET user_id=!i, authenticated=!i, expires=!t, persist=!s WHERE sid=!s',
 		$this->user->user_id, $this->authenticated, $this->expires, $this->ser_persist, $this->sid);
 
-		if (($res = $DB->query($q)) && $DB->affectedRows()) {
+		if (($res = DBH::$db->query($q)) && DBH::$db->affectedRows()) {
 			return true;
 		} else {
 			return $this->add();
@@ -105,8 +101,6 @@ class Session
 
 	function remove($sid = false)
 	{
-		global $DB;
-
 		if (!$sid) {
 			$sid = $this->sid;
 		}
@@ -116,13 +110,12 @@ class Session
 		$this->user = new User;
 		$this->persist = NULL;
 		$this->ser_persist = NULL;
-		$DB->query(kl_str_sql("DELETE from session where sid=!s", $sid));
+		DBH::$db->query(kl_str_sql("DELETE from session where sid=!s", $sid));
 		setcookie($this->cookie, '', 0, '/' . REL_DIR);
 	}
 
 	function check()
 	{
-		global $DB;
 		if (isset($_GET[$this->cookie])) {
 			$this->sid = $_GET[$this->cookie];
 		} else {
@@ -143,8 +136,8 @@ class Session
 			}
 			$error = false;
 		} else {
-			$res = $DB->query(kl_str_sql('SELECT * from session where sid=!s', $this->sid));
-			if ($res AND $row = $DB->fetchRow($res)) {
+			$res = DBH::$db->query(kl_str_sql('SELECT * from session where sid=!s', $this->sid));
+			if ($res AND $row = DBH::$db->fetchRow($res)) {
 				$this->authenticated = (int)$row['authenticated'];
 				$this->expires = strtotime($row['expires']);
 				$this->ser_persist = $row['persist'];

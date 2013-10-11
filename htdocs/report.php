@@ -13,9 +13,9 @@ $report = file_get_contents("php://input");
 if (strlen($report))
 {
     $query = kl_str_sql('insert into raw_reports(raw_data) values (!s)', $report);
-    if ($res = $DB->query($query))
+    if ($res = DBH::$db->query($query))
     {
-	$report_id = $DB->insertID();
+	$report_id = DBH::$db->insertID();
     }
 }
 

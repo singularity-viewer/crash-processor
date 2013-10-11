@@ -1,7 +1,6 @@
 <?php
 class DBH
 {
-
 	public
 	$db_name,
 	$db_pass,
@@ -9,6 +8,9 @@ class DBH
 	$db_host,
 	$dbh,
 	$last_error = "";
+	
+	// instance
+	static $db = null;
 
 	function log($line)
 	{
@@ -31,7 +33,16 @@ class DBH
 
 		@fwrite($f, "[".date('Y-m-d H:i')."] ".$line."\n");
 	}
-
+	
+	function getInstance()
+	{
+		if (self::$db === null)
+		{
+		    self::$db = new DBH;
+		}
+		
+		return self::$db;
+	}
 
 	function connect($db_name, $db_host, $db_user, $db_pass)
 	{

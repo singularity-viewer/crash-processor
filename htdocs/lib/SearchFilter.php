@@ -81,19 +81,17 @@ class SearchFilter
     
     function getVersions()
     {
-        global $DB;
-        
         $ret = array();
         $where = $this->chan ? kl_str_sql("where client_channel=!s", $this->chan) : '';
         $q = "select distinct client_version from reports $where order by client_version desc";
         if (false !== $cached = Memc::getq($q)) return $cached;
         
-        if (!$res = $DB->query($q))
+        if (!$res = DBH::$db->query($q))
         {
             return $ret;
         }
         
-        while ($row = $DB->fetchRow($res))
+        while ($row = DBH::$db->fetchRow($res))
         {
             $ret[] = $row["client_version"];
         }
@@ -104,18 +102,16 @@ class SearchFilter
     
     function getGrids()
     {
-        global $DB;
-        
         $ret = array();
         $q = "select distinct grid from reports order by grid asc";
         if (false !== $cached = Memc::getq($q)) return $cached;
         
-        if (!$res = $DB->query($q))
+        if (!$res = DBH::$db->query($q))
         {
             return $ret;
         }
         
-        while ($row = $DB->fetchRow($res))
+        while ($row = DBH::$db->fetchRow($res))
         {
             $ret[] = $row["grid"];
         }
@@ -155,7 +151,7 @@ class SearchFilter
     
     <div class="filterelem">
         Version<br/>
-        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px; margin-top: 3px;"> 
+        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px; margin-top: 4px;"> 
             <option value="" <?php echo !$this->version ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($ver); $i++)
@@ -179,7 +175,7 @@ for($i = 0; $i < count($ver); $i++)
 
     <div class="filterelem">
         Grid<br/>
-        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px; margin-top: 3px;"> 
+        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px; margin-top: 4px;"> 
             <option value="" <?php echo !$this->grid ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($grids); $i++)

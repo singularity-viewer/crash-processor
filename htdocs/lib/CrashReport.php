@@ -63,13 +63,11 @@ class CrashReport
     }
     function getTotal($filter)
     {
-        global $DB;
-        
         $where = $filter->getWhere();
         $q = "select count(id) as total from reports $where";
         if (false !== $cached = Memc::getq($q)) return $cached;
         
-        if (!$res = $DB->query($q) OR !$row = $DB->fetchRow($res))
+        if (!$res = DBH::$db->query($q) OR !$row = DBH::$db->fetchRow($res))
         {
             return 0;
         }
@@ -82,21 +80,19 @@ class CrashReport
     
     function getReports($filter, $fields = "id, reported, client_version, client_channel, os, gpu, grid, region")
     {
-        global $DB;
-        
         $ret = array();
         $q = "select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset);
         if (false !== $cached = Memc::getq($q)) return $cached;
         
-        if (!$res = $DB->query($q))
+        if (!$res = DBH::$db->query($q))
         {
             return $ret;
         }
         
-        while ($row = $DB->fetchRow($res))
+        while ($row = DBH::$db->fetchRow($res))
         {
             $r = new CrashReport;
-            $DB->loadFromDbRow($r, $res, $row);
+            DBH::$db->loadFromDbRow($r, $res, $row);
             $ret[] = $r;
         }
         
@@ -106,18 +102,16 @@ class CrashReport
     
     function getReport($id)
     {
-        global $DB;
-        
         $ret = array();
-        if (!$res = $DB->query(kl_str_sql("select * from reports where id=!i", $id)))
+        if (!$res = DBH::$db->query(kl_str_sql("select * from reports where id=!i", $id)))
         {
             return null;
         }
         
-        if ($row = $DB->fetchRow($res))
+        if ($row = DBH::$db->fetchRow($res))
         {
             $r = new CrashReport;
-            $DB->loadFromDbRow($r, $res, $row);
+            DBH::$db->loadFromDbRow($r, $res, $row);
             $r->parseStackTrace($r->raw_stacktrace);
             return $r;
         }
@@ -127,13 +121,11 @@ class CrashReport
 
     function delete()
     {
-        global $DB;
-        $DB->query(kl_str_sql("delete from reports where id=!i", $this->id));
+        DBH::$db->query(kl_str_sql("delete from reports where id=!i", $this->id));
     }
     
     function save()
     {
-        global $DB;
         $this->delete();
         $q = kl_str_sql("insert into reports (
                         id,
@@ -171,7 +163,7 @@ class CrashReport
                         $this->crash_address,
                         $this->crash_thread,
                         $this->raw_stacktrace);
-        if ($res = $DB->query($q))
+        if ($res = DBH::$db->query($q))
         {
             return true;
         }

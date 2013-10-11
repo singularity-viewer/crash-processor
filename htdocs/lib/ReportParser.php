@@ -37,14 +37,13 @@ class ReportParser
     
     function parse($id)
     {
-        global $DB;
         $q = kl_str_sql("select * from raw_reports where report_id=!i", $id);
-        if (!$res = $DB->query($q) OR !$row = $DB->fetchRow($res))
+        if (!$res = DBH::$db->query($q) OR !$row = DBH::$db->fetchRow($res))
         {
             return array();
         }
         $data = new stdClass;
-        $DB->loadFromDbRow($data, $res, $row);
+        DBH::$db->loadFromDbRow($data, $res, $row);
         $data->report = llsd_decode($data->raw_data);
         $data->report["reported"] = $data->reported;
         unset($data->raw_data);
@@ -62,11 +61,10 @@ class ReportParser
     
     function setProcessed($id, $status)
     {
-        global $DB;
         $ret = array();
         $q = kl_str_sql("update raw_reports set processed=!i where report_id=!i", $status, $id);
         
-        if ($res = $DB->query($q))
+        if ($res = DBH::$db->query($q))
         {
             return true;
         }
@@ -78,16 +76,15 @@ class ReportParser
     
     function getUnprocessedIDs()
     {
-        global $DB;
         $ret = array();
         $q = kl_str_sql("select report_id from raw_reports where processed=!i", 0);
         
-        if (!$res = $DB->query($q))
+        if (!$res = DBH::$db->query($q))
         {
             return $ret;
         }
         
-        while ($row = $DB->fetchRow($res))
+        while ($row = DBH::$db->fetchRow($res))
         {
             $ret[] = (int)$row["report_id"];
         }
