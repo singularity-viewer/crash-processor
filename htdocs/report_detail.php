@@ -21,15 +21,15 @@ Layout::header();
 ?>
 <script>
     $(function() {
-        $( "#tabs" ).tabs({ active: 1 });
+        $( "#tabs" ).tabs();
         $("div.ui-tabs-panel").css('padding','0px');
     });
 </script>
 
 <div id="tabs">
 <ul>
-    <li><a href="#tabs-0">Details</a></li>
-    <li><a href="#tabs-1">Stack</a></li>
+    <li><a href="#tabs-0">Stack</a></li>
+    <li><a href="#tabs-1">Details</a></li>
     <li><a href="#tabs-2">Modules</a></li>
 <?php if (strlen($full["StatsLog"])): ?>
     <li><a href="#tabs-3">Stats</a></li>
@@ -42,8 +42,37 @@ Layout::header();
 <?php endif ?>
 </ul>
 
-<!-- Details tab -->
+<!-- Stacks tab -->
 <div id="tabs-0">
+<script>
+$(function() {
+    $( "#accordion" )
+        .accordion({ collapsible: true, animate: false, heightStyle: "content", active: <?php echo $report->crash_thread ?> });
+    $("div.ui-accordion-content").css('padding','0px');
+ });
+</script>
+<div id="accordion">
+ 
+<?php for ($threadID = 0; $threadID < count($report->threads); $threadID++): ?>
+<h3>Thread <?php echo htmlentities($threadID . ($threadID == $report->crash_thread ? " (crashed)" : "")) ?></h3>
+<div>
+<table width="100%">
+<?php for ($frameID = 0; $frameID < count($report->threads[$threadID]->frames); $frameID++): $f = $report->threads[$threadID]->frames[$frameID]; ?>
+    <tr>
+        <td width="5%" style="text-align: right;"><?php echo $frameID ?></td>
+        <td width="20%"><?php echo htmlentities($f->module) ?></td>
+        <td width="75%"><?php echo CrashReport::htmlFrame($f) ?></td>
+    </tr>
+<?php endfor ?>
+</table>
+</div>
+<?php endfor ?>
+</div>
+</div>
+<!-- Stacks tab -->
+
+<!-- Details tab -->
+<div id="tabs-1">
 <table>
     <tr>
         <th>ID</th>
@@ -101,34 +130,6 @@ Layout::header();
 </div>
 <!-- Details tab -->
 
-<!-- Stacks tab -->
-<div id="tabs-1">
-<script>
-$(function() {
-    $( "#accordion" )
-        .accordion({ collapsible: true, animate: false, heightStyle: "content", active: <?php echo $report->crash_thread ?> });
-    $("div.ui-accordion-content").css('padding','0px');
- });
-</script>
-<div id="accordion">
- 
-<?php for ($threadID = 0; $threadID < count($report->threads); $threadID++): ?>
-<h3>Thread <?php echo htmlentities($threadID . ($threadID == $report->crash_thread ? " (crashed)" : "")) ?></h3>
-<div>
-<table width="100%">
-<?php for ($frameID = 0; $frameID < count($report->threads[$threadID]->frames); $frameID++): $f = $report->threads[$threadID]->frames[$frameID]; ?>
-    <tr>
-        <td width="5%" style="text-align: right;"><?php echo $frameID ?></td>
-        <td width="20%"><?php echo htmlentities($f->module) ?></td>
-        <td width="75%"><?php echo CrashReport::htmlFrame($f) ?></td>
-    </tr>
-<?php endfor ?>
-</table>
-</div>
-<?php endfor ?>
-</div>
-</div>
-<!-- Stacks tab -->
 
 <!-- Modules tab -->
 <div class="jtable" id="tabs-2">
