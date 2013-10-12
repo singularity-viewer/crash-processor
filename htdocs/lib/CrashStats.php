@@ -14,6 +14,36 @@ class CrashStats
         $this->filter = $filter;
     }
     
+    function getGPUStats()
+    {
+        $ret = array();
+        $where = $this->filter->getWhere();
+        if ($where)
+        {
+            $where .= " and ";
+        }
+        else
+        {
+            $where = "where ";
+        }
+        $where .= "gpu is not null";
+        $q = "select count(id) as nr, gpu from reports $where group by gpu order by nr desc";
+        $q .= kl_str_sql(" limit !i", $this->filter->limit);
+        if (false !== $cached = Memc::getq($q)) return $cached;
+        
+        if (!$res = DBH::$db->query($q)) return $ret;
+        
+        while ($row = DBH::$db->fetchRow($res))
+        {
+            $o = new stdClass;
+            DBH::$db->loadFromDbRow($o, $res, $row);
+            $ret[] = $o;
+        }
+        
+        Memc::setq($q, $ret);
+        return $ret;
+    }    
+
     function getOSStats()
     {
         $ret = array();

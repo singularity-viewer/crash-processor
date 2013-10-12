@@ -28,12 +28,37 @@ $filter->render();
 
     <!-- top crashers tab -->
     <div id="tab-1">
+        <p>Working on it</p>
     </div>
     <!-- /top crashers tab -->
 
 
     <!-- gpu tab -->
     <div id="tab-2">
+<?php
+    function rl_g($r)
+    {
+        global $filter;
+        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&gpu=" . urlencode($r->gpu);
+    }
+    $gpus = $stats->getGPUStats();
+    $c = count($gpus);
+    if ($c) :
+?>
+        <table class="jtable">
+            <tr>
+                <th>Nr. reports</th>
+                <th>GPU Identifier</th>
+            </tr>
+<?php foreach($gpus as $r): ?>
+            <tr class="rowhighlight">
+                <td style="text-align: right"><a href="<?php echo rl_g($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
+                <td><a href="<?php echo rl_g($r) ?>"><?php echo htmlentities($r->gpu) ?></a></td>
+            </tr>
+<?php endforeach ?>
+        </table>
+
+<?php endif ?>
     </div>
     <!-- /gpu tab -->
 
