@@ -6,17 +6,30 @@ class SearchFilter
     public $chan;
     public $version;
     public $grid;
+    public $region;
+    public $gpu;
     public $stacktrace;
+    
     public $sort_by;
     public $sort_order;
     public static $sort_keys = array("date", "os", "version", "grid");
     public static $sort_orders = array("asc", "desc");
-    public $limit = 100;
+    public $limit = 50;
     public $offset = 0;
     public $page = 0;
     
+    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace");
+    
     function __construct()
     {
+        foreach($this->fields as $field)
+        {
+            if (strlen($_GET[$field]))
+            {
+                $this->$field = trim($_GET[$field]);
+            }
+        }
+
         if (in_array($_GET["sort_by"], self::$sort_keys))
         {
             $this->sort_by = $_GET["sort_by"];
@@ -27,34 +40,30 @@ class SearchFilter
             $this->sort_by = $_GET["sort_order"];
         }
         
-        if (strlen($_GET["os"]))
-        {
-            $this->os = $_GET["os"];
-        }
-
-        if (strlen($_GET["chan"]))
-        {
-            $this->chan = $_GET["chan"];
-        }
-
-        if (strlen($_GET["version"]))
-        {
-            $this->version = $_GET["version"];
-        }
-
         if (strlen($_GET["page"]))
         {
             $this->page = $_GET["page"];
         }
-
-        if (strlen($_GET["grid"]))
+    }
+    
+    function getURLArgs()
+    {
+        $cond = array();
+        foreach($this->fields as $field)
         {
-            $this->grid = $_GET["grid"];
+            if ($this->$field)
+            {
+                $cond[] = $field . "=" . urlencode($this->$field);
+            }
         }
-
-        if (strlen($_GET["stacktrace"]))
+        
+        if (!count($cond))
         {
-            $this->stacktrace = $_GET["stacktrace"];
+            return "";
+        }
+        else
+        {
+            return implode("&", $cond);
         }
     }
     
@@ -65,6 +74,8 @@ class SearchFilter
         if ($this->version) $cond[] = kl_str_sql("client_version=!s", $this->version);
         if ($this->chan) $cond[] = kl_str_sql("client_channel=!s", $this->chan);
         if ($this->grid) $cond[] = kl_str_sql("grid=!s", $this->grid);
+        if ($this->region) $cond[] = kl_str_sql("region=!s", $this->region);
+        if ($this->gpu) $cond[] = kl_str_sql("gpu=!s", $this->gpu);
         
         if ($this->stacktrace)
         {
@@ -193,6 +204,15 @@ for($i = 0; $i < count($grids); $i++)
         <input class="ui-widget-content toolbarbutton" type="submit" name="do_search" value="Search" />
     </div>
 </div>
+
+<?php if ($this->region): ?>
+<input type="hidden" name="region" value="<?php echo htmlentities($this->region) ?>" />
+<?php endif ?>
+
+<?php if ($this->gpu): ?>
+<input type="hidden" name="gpu" value="<?php echo htmlentities($this->gpu) ?>" />
+<?php endif ?>
+
 </form>
         
 <?php
