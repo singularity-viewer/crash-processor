@@ -13,7 +13,7 @@ $filter->render();
 <script>
     $(function() {
         $( "#tabs" ).tabs();
-        //$("div.ui-tabs-panel").css('padding','0px');
+        $("div.ui-tabs-panel").css('padding','0px');
     });
 </script>
 <br/>
@@ -45,7 +45,7 @@ $filter->render();
     $c = count($gpus);
     if ($c) :
 ?>
-        <table class="jtable">
+        <table class="jtable noborder">
             <tr>
                 <th>Nr. reports</th>
                 <th>GPU Identifier</th>
@@ -75,7 +75,7 @@ $filter->render();
     $c = count($oses);
     if ($c) :
 ?>
-        <table class="jtable">
+        <table class="jtable noborder">
             <tr>
                 <th>Nr. reports</th>
                 <th>Operating System Type</th>
@@ -105,7 +105,7 @@ $filter->render();
     $c = count($regions);
     if ($c) :
 ?>
-        <table class="jtable">
+        <table class="jtable noborder">
             <tr>
                 <th>Nr. reports</th>
                 <th>Region</th>
