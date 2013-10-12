@@ -69,7 +69,7 @@ if (!DBH::$db->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
 	die();
 }
 
-//Option::init();
+Option::init();
 
 $S = new Session();
 if (!defined('NO_SESSION') && PHP_SAPI != "cli") {

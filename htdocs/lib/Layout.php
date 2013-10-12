@@ -31,6 +31,27 @@
 
 class Layout
 {
+  
+  function getLoginGateway()
+  {
+	$assoc_handle_expires = (int)Option::get('assoc_handle_expires');
+	$now = time();
+	
+	$assoc_handle = Option::get("assoc_handle");
+	
+	if (!$assoc_handle || $assoc_handle_expires < $now)
+	{
+		$assoc_handle_expires = time() + 604800;
+		$assoc_handle = GoogleOpenID::getAssociationHandle();
+		if ($assoc_handle)
+		{
+			Option::update("assoc_handle_expires", $assoc_handle_expires);
+			Option::update("assoc_handle", $assoc_handle);
+		}
+	}
+
+	return GoogleOpenID::createRequest(URL_ROOT . "/process_login.php", $handle, true);
+  }
 
   function since($since)
   {
@@ -67,7 +88,7 @@ class Layout
 	{
 	  $item = new stdClass;
 	  $item->label = "Login";
-	  $item->link = "/login.php";
+	  $item->link = self::getLoginGateway()->getRequestURL();
 	  $menu[] = $item;
 	}
 	else

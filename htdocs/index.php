@@ -3,6 +3,11 @@
 define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 
+if (!$S->isAnonymous() && $S->user->isAllowed())
+{
+    http::redirect("/crashes.php");
+}
+
 Layout::header();
 ?>
 
