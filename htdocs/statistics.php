@@ -40,6 +40,30 @@ $filter->render();
 
     <!-- os tab -->
     <div id="tab-3">
+<?php
+    function rl_o($r)
+    {
+        global $filter;
+        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&os=" . urlencode($r->os_type);
+    }
+    $oses = $stats->getOSStats();
+    $c = count($oses);
+    if ($c) :
+?>
+        <table class="jtable">
+            <tr>
+                <th>Nr. reports</th>
+                <th>Operating System Type</th>
+            </tr>
+<?php foreach($oses as $r): ?>
+            <tr class="rowhighlight">
+                <td style="text-align: right"><a href="<?php echo rl_o($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
+                <td><a href="<?php echo rl_o($r) ?>"><?php echo htmlentities($r->os_type) ?></a></td>
+            </tr>
+<?php endforeach ?>
+        </table>
+
+<?php endif ?>
     </div>
     <!-- /os tab -->
 
