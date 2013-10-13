@@ -98,3 +98,21 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
+#menubar {
+    text-align: justify;
+    margin: 10px 0px 10px 0px;
+    padding: .5em;
+    vertical-align: middle;
+}
+
+#menubar div {
+    display: inline-block;
+}
+
+#menubar:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+

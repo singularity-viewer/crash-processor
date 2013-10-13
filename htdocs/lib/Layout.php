@@ -136,23 +136,6 @@ class Layout
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <link rel="shortcut icon" href="<?php print IMG_ROOT ?>/favicon.ico" type="image/x-icon" />
     <title>Singularity Viewer - Automated Crash Report Processing System</title>
-	<style type="text/css">
-	  #menubar {
-		text-align: justify;
-		margin: 10px 0px 10px 0px;
-		padding: .5em;
-	  }
-	  
-	  #menubar div {
-		display: inline-block;
-	  }
-	  
-	  #menubar:after {
-		content: '';
-		display: inline-block;
-		width: 100%;
-	  }
-	</style>
   </head>
   <body>
 	<script type="text/javascript">
