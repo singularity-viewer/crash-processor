@@ -236,6 +236,8 @@ for($i = 0; $i < count($grids); $i++)
     
     function renderPaginator($total)
     {
+        $l = $_SERVER["PHP_SELF"];
+        
         ob_start();
 ?>
 <script>
@@ -296,15 +298,15 @@ for($i = 0; $i < count($grids); $i++)
 </script>
 
 <!--div id="paginator" class="ui-widget-header ui-corner-all" style="display: inline-block; padding: 4px"-->
-    <button id="first">First</button>
-    <button id="previous">Previous</button>
+    <a id="first">First</a>
+    <a id="previous">Previous</a>
     <div style="display: inline-block; text-align: center; width: 175px;">
         <?php echo $this->offset + 1 ?> - 
         <?php echo $this->offset + $this->limit > $total ? $total : $this->offset + $this->limit  ?> out of
         <?php echo $total ?>
     </div>
-    <button id="next">Next</button>
-    <button id="last">Last</button>
+    <a id="next">Next</a>
+    <a id="last">Last</a>
 <!--/div-->
 
 <?php

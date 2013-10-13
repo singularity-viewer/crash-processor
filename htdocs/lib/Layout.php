@@ -153,14 +153,14 @@ class Layout
 	//]]>
 	</script>
 
-    <div style="padding-top:20px;">
-      <div style="display: inline-block;">
-	<a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="150px" height="150px"/></a>
+    <div style="padding-top:10px;">
+      <div style="display: inline-block;  margin-right: 30px;">
+	    <a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="100px" height="100px"/></a>
       </div>
-      <div style="display: inline-block;color: #eee; padding: 55px 0 0 30px; vertical-align: top;">
-	<a href="<?php echo URL_ROOT ?>" style="font-size: 4em; font-weight: bold;">Singularity Viewer</a>
-	<br/>
-	<span style="font-size: 1.6em;">Automated Crash Report Processing</span>
+      <div style="display: inline-block;color: #eee; padding-bottom: 10px; vertical-align: bottom;">
+	    <a href="<?php echo URL_ROOT ?>" style="font-size: 3em; font-weight: bold;">Singularity Viewer</a>
+	    <br/>
+	    <span style="font-size: 1.6em;">Automated Crash Report Processing</span>
       </div>
     </div>
 	
