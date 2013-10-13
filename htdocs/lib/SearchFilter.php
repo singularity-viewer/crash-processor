@@ -84,7 +84,14 @@ class SearchFilter
             $parts = preg_split("/\\s+/", trim($this->stacktrace));
             foreach($parts as $part)
             {
-                $cond[] = kl_str_sql("raw_stacktrace like !s", "%{$part}%");
+                if ($part[0] == "-")
+                {
+                    $cond[] = kl_str_sql("raw_stacktrace not like !s", "%" . substr($part, 1) . "%");
+                }
+                else
+                {
+                    $cond[] = kl_str_sql("raw_stacktrace like !s", "%{$part}%");
+                }
             }
         }
         
