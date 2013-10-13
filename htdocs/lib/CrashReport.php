@@ -21,6 +21,11 @@ class CrashReport
     public $modules = array();
     public $threads = array();
     public $raw_stacktrace;
+    public $signature_id;
+    public $signature;
+    public $signature_text;
+    
+    public static $all_signatures;
     
     function htmlFrame($f)
     {
@@ -173,8 +178,12 @@ class CrashReport
         }
     }
     
-    function parseStackTrace($stacktrace)
+    function parseStackTrace($stacktrace = null)
     {
+        if (null === $stacktrace)
+        {
+            $stacktrace = $this->raw_stacktrace;
+        }
         $lines = explode("\n", $stacktrace);
         foreach($lines as $line)
         {
@@ -230,6 +239,113 @@ class CrashReport
                 
             }
         }
+    }
+    
+    function updateSignature()
+    {
+        $t = $this->threads[$this->crash_thread];
+        if (!$t) return;
+        //var_dump($t);
+        
+        $module = null;
+        $function = null;
+        $singu_function = null;
+        
+        for ($i = 0; $i < count($t->frames); $i++)
+        {
+            $f = $t->frames[$i]; // current frame
+            
+            $f->source_file = str_replace("\\", "/", $f->source_file);
+            
+            if (stristr($f->module, "singularity") !== false)
+            {
+                $f->module = "singularity";
+            }
+            else if (stristr($f->module, "llcommon") !== false)
+            {
+                $f->module = "llcommon";
+            }
+            else if (preg_match("/(kernel|ntdll).*\\.dll/i", $f->module))
+            {
+                $f->module = "windows-runtime";
+            } else if (preg_match("/libc.*\\.so/i", $f->module))
+            {
+                $f->module = "linux-runtime";
+            } else if (preg_match("/libsys.*\\.dylib/i", $f->module))
+            {
+                $f->module = "mac-runtime";
+            } else if (preg_match("/(nvogl|libnvidia)/i", $f->module))
+            {
+                $f->module = "nvidia-driver";
+            } else if (preg_match("/(atiogl|fglrx)/i", $f->module))
+            {
+                $f->module = "ati-driver";
+            } else if (preg_match("/ig.*icd/i", $f->module))
+            {
+                $f->module = "intel-driver";
+            }
+            
+            if (!$module && $f->module)
+            {
+                $module = $f->module;
+            }
+            
+            $is_singu = stristr($f->source_file, "/indra/") !== false;
+            if ($is_singu)
+            {
+                if (!$singu_function)
+                {
+                    $singu_function = $f->function;
+                    if (!$function) $function = $f->function;
+                }
+            }
+            else if (!$function && $f->function)
+            {
+                $function = $f->function;
+            }
+        }
+        
+        if ($function == $singu_function) $function = "";
+        $this->signature_text = "$module|$function|$singu_function";
+        $this->signature = md5($this->signature_text);
+    }
+    
+    function getAllSignatureHashes()
+    {
+        $ret = array();
+        $q = "select id, hash from signature";
+        
+        if (!$res = DBH::$db->query($q)) return $ret;
+
+        while ($row = DBH::$db->fetchRow($res))
+        {
+            $ret[$row["hash"]] = (int)$row["id"];
+        }
+        
+        return $ret;
+    }
+    
+    function saveSignature()
+    {
+        if (!self::$all_signatures)
+        {
+            self::$all_signatures = self::getAllSignatureHashes();
+        }
+        
+        if (!self::$all_signatures[$this->signature])
+        {
+            $q = kl_str_sql("insert into signature(hash, signature) values (!s, !s)", $this->signature, $this->signature_text);
+            if (!$res = DBH::$db->query($q)) return;
+            $this->signature_id = DBH::$db->insertID();
+            self::$all_signatures[$this->signature] = $this->signature_id;
+        }
+        else
+        {
+            $this->signature_id = self::$all_signatures[$this->signature];
+        }
+        
+        $q = kl_str_sql("update reports set signature_id=!i where id=!i", $this->signature_id, $this->id);
+        $res = DBH::$db->query($q);
     }
     
     function init($id, $data, $stacktrace)

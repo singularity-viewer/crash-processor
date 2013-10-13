@@ -52,5 +52,12 @@ create table reports(
     crash_reason varchar(128),
     crash_address varchar(16),
     crash_thread integer,
-    raw_stacktrace  longtext 
+    raw_stacktrace  longtext,
+    signature_id integer
+);
+
+create table signature(
+    id integer not null auto_increment primary key,
+    hash varchar(32) not null unique,
+    signature text
 );

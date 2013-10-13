@@ -52,6 +52,8 @@ foreach($reports as $id)
     $crash->init($id, $r, $stacktrace);
     if ($crash->save())
     {
+        $crash->updateSignature();
+        $crash->saveSignature();
         $nr++;
         ReportParser::setProcessed($id, 1);
     }
