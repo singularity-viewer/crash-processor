@@ -19,7 +19,7 @@ class SearchFilter
     public $offset = 0;
     public $page = 0;
     
-    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace", "signature_id");
+    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace", "signature_id", "limit", "offset");
     
     function __construct()
     {
@@ -156,7 +156,7 @@ class SearchFilter
 
 </script>
 
-<form method="get">
+<form id="filter_form" method="get">
 <div class="ui-widget ui-corner-all ui-widget-content">
     <div class="ui-widget-header" style="padding: 5px">Filter</div>
 
@@ -226,9 +226,89 @@ for($i = 0; $i < count($grids); $i++)
 <input type="hidden" name="signature_id" value="<?php echo htmlentities($this->signature_id) ?>" />
 <?php endif ?>
 
+<input type="hidden" id="limit" name="limit" value="<?php echo (int)($this->limit) ?>" />
+<input type="hidden" id="offset" name="offset" value="<?php echo (int)($this->offset) ?>" />
+
 </form>
         
 <?php
+    }
+    
+    function renderPaginator($total)
+    {
+        ob_start();
+?>
+<script>
+    $(function() {
+        
+        var $filter = $("#filter_form");
+        var $offset = Number($("#offset").val());
+        var $limit = Number($("#limit").val());
+        var $total = Number(<?php echo $total ?>);
+        var $max_offset = (Math.floor($total / $limit)) * $limit;
+        //console.log("Offset: " + $offset + "; Max offset: " + $max_offset);
+        
+        $("#first").button({
+            disabled: $offset == 0,
+            text: false,
+            icons: { primary: "ui-icon-seek-start" },
+        })
+        .on("click", function() {
+            $("#offset").val(0);
+            $filter.submit();
+        });
+
+        $("#previous").button({
+            disabled: $offset == 0,
+            text: false,
+            icons: { primary: "ui-icon-seek-prev" },
+        })
+        .on("click", function() {
+            $offset -= $limit;
+            if ($offset < 0 ) $offset = 0;
+            $("#offset").val($offset);
+            $filter.submit();
+        });
+
+        $("#next").button({
+            disabled: $offset >= $max_offset,
+            text: false,
+            icons: { primary: "ui-icon-seek-next" },
+        })
+        .on("click", function() {
+            $offset += $limit;
+            if ($offset > $total ) $offset = $total;
+            $("#offset").val($offset);
+            $filter.submit();
+        });
+
+        $("#last").button({
+            disabled: $offset >= $max_offset,
+            text: false,
+            icons: { primary: "ui-icon-seek-end" },
+        })
+        .on("click", function() {
+            $("#offset").val($max_offset);
+            $filter.submit();
+        });
+        
+    });
+</script>
+
+<!--div id="paginator" class="ui-widget-header ui-corner-all" style="display: inline-block; padding: 4px"-->
+    <button id="first">First</button>
+    <button id="previous">Previous</button>
+    <div style="display: inline-block; text-align: center; width: 175px;">
+        <?php echo $this->offset + 1 ?> - 
+        <?php echo $this->offset + $this->limit > $total ? $total : $this->offset + $this->limit  ?> out of
+        <?php echo $total ?>
+    </div>
+    <button id="next">Next</button>
+    <button id="last">Last</button>
+<!--/div-->
+
+<?php
+        return ob_get_clean();
     }
     
 }

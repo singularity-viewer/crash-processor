@@ -12,7 +12,7 @@ function lk($id, $txt)
 $filter = new SearchFilter();
 $total = CrashReport::getTotal($filter);
 $reports = CrashReport::getReports($filter);
-Layout::header();
+Layout::header($filter->renderPaginator($total));
 
 $filter->render();
 ?>
@@ -110,9 +110,11 @@ $filter->render();
                 }
             });
         });
+        
     });
 </script>
-<p>Reports <strong><?php echo $total ?></strong></p>
+
+<br/>
 
 <table width="100%" class="jtable">
     <tr>
@@ -134,6 +136,7 @@ $filter->render();
     </tr>
 <?php endfor ?>
 </table>
+
 <?php
 Layout::footer();
 
