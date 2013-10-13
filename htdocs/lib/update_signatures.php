@@ -17,8 +17,8 @@ while ($row = DBH::$db->fetchRow($res))
     DBH::$db->loadFromDbRow($r, $res, $row);
     $r->parseStackTrace();
     $r->updateSignature();
-    var_dump($r);
     print "Updating signature for {$r->id}\n";
     $r->saveSignature();
 }
 DBH::$db->commit();
+Memc::flush();

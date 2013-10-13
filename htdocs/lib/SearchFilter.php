@@ -9,6 +9,7 @@ class SearchFilter
     public $region;
     public $gpu;
     public $stacktrace;
+    public $signature_id;
     
     public $sort_by;
     public $sort_order;
@@ -18,7 +19,7 @@ class SearchFilter
     public $offset = 0;
     public $page = 0;
     
-    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace");
+    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace", "signature_id");
     
     function __construct()
     {
@@ -76,6 +77,7 @@ class SearchFilter
         if ($this->grid) $cond[] = kl_str_sql("grid=!s", $this->grid);
         if ($this->region) $cond[] = kl_str_sql("region=!s", $this->region);
         if ($this->gpu) $cond[] = kl_str_sql("gpu=!s", $this->gpu);
+        if ($this->signature_id) $cond[] = kl_str_sql("signature_id=!s", $this->signature_id);
         
         if ($this->stacktrace)
         {
@@ -211,6 +213,10 @@ for($i = 0; $i < count($grids); $i++)
 
 <?php if ($this->gpu): ?>
 <input type="hidden" name="gpu" value="<?php echo htmlentities($this->gpu) ?>" />
+<?php endif ?>
+
+<?php if ($this->signature_id): ?>
+<input type="hidden" name="signature_id" value="<?php echo htmlentities($this->signature_id) ?>" />
 <?php endif ?>
 
 </form>

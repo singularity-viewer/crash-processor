@@ -28,7 +28,39 @@ $filter->render();
 
     <!-- top crashers tab -->
     <div id="tab-1">
-        <p>Working on it</p>
+<?php
+    function rl_s($r)
+    {
+        global $filter;
+        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&signature_id=" . urlencode($r->signature_id);
+    }
+    $sigs = $stats->getTopCrashers();
+    $c = count($sigs);
+    if ($c) :
+?>
+        <table class="jtable noborder" style="width: 100%">
+            <tr>
+                <th style="width:  3%">Nr</th>
+                <th style="width: 10%">Module</th>
+                <th style="width: 80%">Stack Top</th>
+            </tr>
+<?php
+    foreach($sigs as $r):
+        $parts = explode("|", $r->signature_text);
+        $txt = "";
+        if ($parts[1]) $txt .= preg_replace("/((&lt;|&gt;|,|\\(|\\)))/", "&thinsp;\\1&thinsp;", htmlentities($parts[1]));
+        if ($txt) $txt .= "<br/><br/>";
+        if ($parts[2]) $txt .= preg_replace("/((&lt;|&gt;|,|\\(|\\)))/", "&thinsp;\\1&thinsp;", htmlentities($parts[2]));
+?>
+            <tr class="rowhighlight">
+                <td style="text-align: right"><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
+                <td><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($parts[0]) ?></a></td>
+                <td><a href="<?php echo rl_s($r) ?>"><?php echo $txt ?></a></td>
+            </tr>
+<?php endforeach ?>
+        </table>
+
+<?php endif ?>
     </div>
     <!-- /top crashers tab -->
 

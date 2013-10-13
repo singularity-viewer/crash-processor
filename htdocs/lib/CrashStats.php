@@ -6,12 +6,62 @@ class CrashStats
     
     function __construct($filter = null)
     {
-        $this->filter = $filter;
+        if ($filter)
+        {
+            $this->filter = $filter;
+        }
+        else
+        {
+            $this->filter = new SearchFilter;
+        }
     }
     
     function setFilter($filter)
     {
         $this->filter = $filter;
+    }
+    
+    function getTopCrashers()
+    {
+        $ret = array();
+        $where = $this->filter->getWhere();
+        $q = "select count(r.id) as nr, s.id as signature_id, s.signature as signature_text from reports r join signature s on r.signature_id = s.id $where group by signature_id order by nr desc";
+        $q .= kl_str_sql(" limit !i", 100);
+        if (false !== $cached = Memc::getq($q)) return $cached;
+
+        if (!$res = DBH::$db->query($q))
+        {
+            return $ret;
+        }
+        
+        while ($row = DBH::$db->fetchRow($res))
+        {
+            $r = new stdClass;
+            DBH::$db->loadFromDbRow($r, $res, $row);
+            $ret[] = $r;
+        }
+        
+        Memc::setq($q, $ret);
+        return $ret;
+    }
+    
+    function getSignature($id)
+    {
+        $ret = new stdClass;
+        $q = kl_str_sql("select * from signature where id=!i", $id);
+
+        if (!$res = DBH::$db->query($q))
+        {
+            return false;
+        }
+        
+        if ($row = DBH::$db->fetchRow($res))
+        {
+            DBH::$db->loadFromDbRow($ret, $res, $row);
+            return $ret;
+        }
+        
+        return false;
     }
     
     function getGPUStats()

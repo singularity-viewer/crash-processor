@@ -83,7 +83,7 @@ class CrashReport
         }
     }
     
-    function getReports($filter, $fields = "id, reported, client_version, client_channel, os, gpu, grid, region")
+    function getReports($filter, $fields = "id, reported, client_version, client_channel, os, gpu, grid, region, signature_id")
     {
         $ret = array();
         $q = "select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset);
@@ -305,7 +305,15 @@ class CrashReport
             }
         }
         
-        if ($function == $singu_function) $function = "";
+        if ($function == $singu_function)
+        {
+            $function = "";
+        }
+        if (!$singu_function && strpos($function, "LL") !== false)
+        {
+            $singu_function = $function;
+            $function = "";
+        }
         $this->signature_text = "$module|$function|$singu_function";
         $this->signature = md5($this->signature_text);
     }
