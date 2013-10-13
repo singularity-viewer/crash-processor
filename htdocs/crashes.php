@@ -71,9 +71,9 @@ $filter->render();
                     x -= dwidth + 40;
                 }
                 
-                var y = e.pageY + $(document).scrollTop();
+                var y = e.pageY - $(document).scrollTop();
                 var dheight = $dialog.height();
-                if (dheight < 40) dheight = 40;
+                if (dheight < 70) dheight = 70;
                 //console.debug("y=" + y + "; wheight=" + $(window).height() + ": dheight=" + dheight);
                 if (y < $(window).height() - dheight - 40)
                 {

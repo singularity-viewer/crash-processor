@@ -48,9 +48,10 @@ $filter->render();
     foreach($sigs as $r):
         $parts = explode("|", $r->signature_text);
         $txt = "";
-        if ($parts[1]) $txt .= preg_replace("/((&lt;|&gt;|,|\\(|\\)))/", "&thinsp;\\1&thinsp;", htmlentities($parts[1]));
+        if ($parts[1]) $txt .= preg_replace("/((::|&lt;|&gt;|,|\\(|\\)))/", "<wbr/>\\1<wbr/>", htmlentities($parts[1]));
         if ($txt) $txt .= "<br/><br/>";
-        if ($parts[2]) $txt .= preg_replace("/((&lt;|&gt;|,|\\(|\\)))/", "&thinsp;\\1&thinsp;", htmlentities($parts[2]));
+        if ($parts[2]) $txt .= preg_replace("/((::|&lt;|&gt;|,|\\(|\\)))/", "<wbr/>\\1<wbr/>", htmlentities($parts[2]));
+        if (!$txt) $txt = "&nbsp;";
 ?>
             <tr class="rowhighlight">
                 <td style="text-align: right"><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
