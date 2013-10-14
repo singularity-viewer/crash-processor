@@ -26,7 +26,7 @@ function renderComments($comments)
             $del = "<a class=\"del_comment\" data-id=\"{$c->id}\">Delete comment</a> ";
         }
 ?>
-<div class="ui-corner-all" style="margin: 2em 0; background-color: #252525;">
+<div class="ui-corner-all" style="margin: 2em 0; background-color: #252525; margin-right: 20px;">
     <div style="padding: 5px; border-bottom: 1px solid #444; vertical-align: middle;">
         <?php echo $del . htmlentities($from) ?>
     </div>
