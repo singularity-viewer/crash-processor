@@ -43,7 +43,7 @@ Layout::header();
         <th>Name</th>
         <th>Email</th>
         <th>Access</th>
-        <th>Actions</th>
+        <th colspan="2">Actions</th>
     </tr>
 <?php for ($i=0; $i<count($users); $i++): ?>
     <tr>
@@ -51,14 +51,19 @@ Layout::header();
         <td><?php echo htmlentities($users[$i]->name); ?></td>
         <td><?php echo htmlentities($users[$i]->email); ?></td>
         <td><?php echo $users[$i]->isAdmin() ? "Admin" : ($users[$i]->isAllowed() ? "Granted" : "No");  ?></td>
-        <td>
 <?php
-    if (!$users[$i]->isAdmin())
+    if ($users[$i]->isAdmin())
     {
+        print '<td colspan="2">';
+    }
+    else
+    {
+        print "<td>";
         $action = $users[$i]->isAllowed() ? "revoke" : "grant";
         $url = URL_ROOT . "/users.php?action=$action&id=" . (int)$users[$i]->user_id;
         $delete = URL_ROOT . "/users.php?action=remove&id=" . (int)$users[$i]->user_id;
-        print "<a class=\"toolbarbutton\" href=\"{$url}\">{$action}</a>&nbsp;&nbsp;";
+        print "<a class=\"toolbarbutton\" href=\"{$url}\">{$action}</a>";
+        print "</td><td>";
         print "<a class=\"toolbarbutton\" href=\"{$delete}\" title=\"Caution: completely deletes information about this user.\" onclick=\"return confirm('Are you sure you want to completely remove this account? Just revoking access works too, and they can create it again by logging with their Google credentials.');\">delete account</a>";
     }
 ?>

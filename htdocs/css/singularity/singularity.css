@@ -27,6 +27,7 @@ div {
     margin: 0;
 }
 
+/*
 input {
     color: #a0a0a0;
     background-color: #2C3737;
@@ -37,6 +38,22 @@ input {
 
 input:hover {
     background-color: #445A5E;
+}
+*/
+
+input, select, textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+textarea,
+select,
+input[type="text"] {
+    padding: 0.25em 0.3em;
+    margin: 0.1em 0;
+    vertical-align: middle;
+    border-radius: 4px;
 }
 
 a, a:link, a:hover, a:visited, a:active {

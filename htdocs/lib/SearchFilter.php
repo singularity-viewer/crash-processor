@@ -171,7 +171,7 @@ class SearchFilter
     
     <div class="filterelem">
         Version<br/>
-        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px; margin-top: 4px;"> 
+        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px;"> 
             <option value="" <?php echo !$this->version ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($ver); $i++)
@@ -195,7 +195,7 @@ for($i = 0; $i < count($ver); $i++)
 
     <div class="filterelem">
         Grid<br/>
-        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px; margin-top: 4px;"> 
+        <select class="ui-widget-content" name="grid" onchange="this.form.submit();" style="width: 200px;"> 
             <option value="" <?php echo !$this->grid ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($grids); $i++)
@@ -209,8 +209,8 @@ for($i = 0; $i < count($grids); $i++)
 
     <div class="filterelem">
         Stacktrace contains<br/>
-        <input class="ui-widget-content ui-button" type="text" name="stacktrace" value="<?php echo htmlentities($this->stacktrace) ?>" style="text-align: left; padding-left: 4px;" />
-        <input class="ui-widget-content toolbarbutton" type="submit" name="do_search" value="Search" />
+        <input class="ui-widget-content" type="text" name="stacktrace" value="<?php echo htmlentities($this->stacktrace) ?>" />
+        <input class="toolbarbutton" type="submit" name="do_search" value="Search" />
     </div>
 </div>
 

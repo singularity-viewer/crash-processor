@@ -25,10 +25,11 @@ Layout::header();
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <input type="hidden" name="user_id" value="<?php echo (int)$user->user_id; ?>" />
-    <table>
+    <table class="jtable">
         <tr>
             <td>Name</td>
-            <td><input type="text" name="name" size="30" value="<?php echo htmlentities($user->name); ?>" />&nbsp;<input type="submit" name="save_name" value="Save" /></td>
+            <td><input class="ui-widget-content" type="text" name="name" size="30" value="<?php echo htmlentities($user->name); ?>" />&nbsp;
+            <input class="ui-widget-content toolbarbutton" type="submit" name="save_name" value="Save" /></td>
         </tr>
         <tr>
             <td>Email</td>
