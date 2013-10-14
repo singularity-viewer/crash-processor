@@ -66,10 +66,11 @@ table.jtable tr:hover, table.jtable th {
 
 table.jtable {
         border-spacing: 0px;
-	border-collapse:collapse;
+	/*border-collapse:collapse;*/
 	border: 1px solid #555555;
 	background: #1e1e1e url(images/ui-bg_flat_25_1e1e1e_40x100.png) 50% 50% repeat-x;
 	color: #c5c5c5;
+	border-radius: 4px;
 }
 
 table.jtable a:visited {

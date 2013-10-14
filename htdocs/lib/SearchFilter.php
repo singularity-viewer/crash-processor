@@ -157,7 +157,7 @@ class SearchFilter
 </script>
 
 <form id="filter_form" method="get">
-<div class="ui-widget ui-corner-all ui-widget-content">
+<div class="ui-widget ui-widget-content ui-corner-all">
     <div class="ui-widget-header" style="padding: 5px">Filter</div>
 
     <div class="filterelem">
