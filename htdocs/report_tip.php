@@ -4,21 +4,6 @@ define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 $S->requireUser();
 
-/*
-$report = CrashReport::getReport((int)$_GET["id"]);
-if (!$report)
-{
-    print "<p>No such report</p>";
-    return;    
-}
-
-
-$full = ReportParser::parse($report->id);
-//print_r (array_keys($full));
-
-print "<p> Reported: " . date("r", (int)$report->reported). "</p>";
-*/
-
 $stats = new CrashStats($filter);
 
 if (false === $r = $stats->getSignature((int)$_GET["signature_id"]))

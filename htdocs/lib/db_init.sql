@@ -59,5 +59,14 @@ create table reports(
 create table signature(
     id integer not null auto_increment primary key,
     hash varchar(32) not null unique,
-    signature text
+    signature text,
+    has_comments integer
+);
+
+create table comment(
+    id integer not null auto_increment primary key,
+    signature_id integer,
+    user_id integer,
+    commented timestamp not null default current_timestamp,
+    comment text
 );

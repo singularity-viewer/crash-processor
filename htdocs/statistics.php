@@ -14,6 +14,35 @@ $filter->render();
     $(function() {
         $( "#tabs" ).tabs();
         $("div.ui-tabs-panel").css('padding','0px');
+        
+        var tag = $("<div></div>");
+        var $dialog = tag.dialog({
+            autoOpen: false,
+            width: 800,
+            height: 500,
+        });
+        
+        $(".comment_link").each(function() {
+            var $link = $(this);
+            var signature_id = $link.data("signature-id");
+            
+            $link.on("click", function() {
+                $dialog.dialog("option", "title", "Crash signature " + signature_id);
+                $dialog.dialog("open");
+                
+                $.ajax({
+                    url: "comments.php?ajax=1&signature_id=" + signature_id,
+                    success: function(res) {
+                        tag.html(res);
+                    },
+                    error: function() {
+                        tag.html("<p>Failed to fetch the comment section for this signature</p>");
+                    },
+                });
+            });
+        });
+
+
     });
 </script>
 <br/>
@@ -41,6 +70,7 @@ $filter->render();
         <table class="jtable noborder" style="width: 100%">
             <tr>
                 <th style="width:  3%">Nr</th>
+                <th style="width:  7%">&nbsp;</th>
                 <th style="width: 10%">Module</th>
                 <th style="width: 80%">Stack Top</th>
             </tr>
@@ -55,6 +85,7 @@ $filter->render();
 ?>
             <tr class="rowhighlight">
                 <td style="text-align: right"><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
+                <td><a href="#" class="comment_link" data-signature-id="<?php echo htmlentities($r->signature_id) ?>">Comments</a></td>
                 <td><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($parts[0]) ?></a></td>
                 <td><a href="<?php echo rl_s($r) ?>"><?php echo $txt ?></a></td>
             </tr>
