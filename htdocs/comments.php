@@ -71,7 +71,7 @@ if (!$ajax) Layout::header();
                 icons: { primary: "ui-icon-close" },
             })
             .on("click", function(){
-                if (true || confirm("Delete comment?")) {
+                if (confirm("Delete comment?")) {
 
                     data = {
                         ajax: 1,
