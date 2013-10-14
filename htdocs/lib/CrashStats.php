@@ -153,41 +153,4 @@ class CrashStats
         Memc::setq($q, $ret);
         return $ret;
     }
-    
-    function updateCommentCount($id)
-    {
-        $q = kl_str_sql("update signature set has_comments=(select count(*) as count from comment where signature_id=!i) where id=!i", $id, $id);
-        DBH::$db->query($q);
-    }
-    
-    function addSignatureComment($id, $text)
-    {
-        global $S;
-        $q = kl_str_sql("insert into comment (signature_id, user_id, comment) values (!i, !i, !s)", $id, $S->user_id, $text);
-        DBH::$db->query($q);
-        self::updateCommentCount($id);
-    }
-    
-    function getSignatureComments($id)
-    {
-        $ret = array();
-        $q = kl_str_sql("select c.*, u.name, u.email from comment c join users u on c.user_id = u.user_id where signature_id=!i order by id asc;", $id);
-        if (!$res = DBH::$db->query($q)) return;
-        
-        while ($row = DBH::$db->fetchRow($res))
-        {
-            $c = new stdClass;
-            DBH::$db->loadFromDbRow($c, $res, $row);
-            $ret[] = $c;
-        }
-        
-        return $ret;
-    }
-    
-    function delSignatureComment($id, $del_id)
-    {
-        $q = kl_str_sql("delete from comment where id=!i", $del_id);
-        DBH::$db->query($q);
-        self::updateCommentCount($id);
-    }
 }
