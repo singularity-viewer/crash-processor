@@ -17,6 +17,7 @@ $filter->render();
         
         var tag = $("<div></div>");
         var $dialog = tag.dialog({
+            modal: true,
             autoOpen: false,
             width: 800,
             height: 500,
