@@ -110,11 +110,16 @@ table.noborder {
     cursor: pointer;
 }
 
+code,
 pre {
     font-family: monospace;
-    font-size: 1.2em;
+    font-size: 9pt;
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+code {
+    white-space: pre;
 }
 
 #menubar {

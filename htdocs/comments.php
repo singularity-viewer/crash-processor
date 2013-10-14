@@ -25,13 +25,21 @@ function renderComments($comments)
         {
             $del = "<a class=\"del_comment\" data-id=\"{$c->id}\">Delete comment</a> ";
         }
+        $gid = md5($c->email);
+        $avatar = (USE_SSL ? "https://secure.gravatar.com" : "http://www.gravatar.com") .  "/avatar/$gid?r=x&amp;d=mm&amp;s=48";
+        
 ?>
-<div class="ui-corner-all" style="margin: 2em 0; background-color: #252525; margin-right: 20px;">
+<div>
+<div style="float: left; display: inline-block; ">
+    <img style="border-radius: 5px; margin-top: 3px; border: 1px solid #444; filter: alpha(opacity=80); opacity: 0.8;" src="<?php echo $avatar ?>" />
+</div>
+<div class="ui-corner-all" style="margin: 2em 0; background-color: #252525; margin-left: 60px; margin-right: 20px;">
     <div style="padding: 5px; border-bottom: 1px solid #444; vertical-align: middle;">
         <?php echo $del . htmlentities($from) ?>
     </div>
     <div style="padding: 5px"><?php echo $comment ?></div>
-</div>   
+</div>
+</div>
 <?php
     endforeach;
 }
