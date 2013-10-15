@@ -124,7 +124,9 @@ class Comments
     
     $(function(){
         $("#add_comment").button()
-        .on("click", function(){
+        .on("click", function(e){
+            
+            e.preventDefault();
 
             data = {
                 ajax: 1,
@@ -139,15 +141,15 @@ class Comments
                 data: data,
                 success: function(res) {
                    $("#comments_scroller").html(res);
-                   $('#comments_scroller').scrollTop($('#comments_scroller')[0].scrollHeight);
                    updateDelLinks();
+                   scrollDown($('#comments_scroller'));
                 },
             });
         });
         
-        $('#comments_scroller').scrollTop($('#comments_scroller')[0].scrollHeight);
-        
         updateDelLinks();
+        scrollDown($('#comments_scroller'));
+        
     });
 </script>
 
@@ -155,8 +157,12 @@ class Comments
     <p>Comments for crash signature <?php echo $id ?></p>
     <div id="comments_scroller" style="max-height: 300px; overflow-y: auto;"><?php echo self::renderComments($id) ?></div>
     <div id="new_comment">
-        <a id="add_comment">Add comment</a>
-        <textarea id="comment_input" class="ui-widget-content" style="width: 100%; display: block; height: 100px; margin-top: 5px;"></textarea>
+        <form id="comment_submit_form" action="comments.php">
+            <input type="submit" id="add_comment" value="Add comment" />
+            <textarea id="comment_input" class="ui-widget-content" style="width: 100%; display: block; height: 100px; margin-top: 5px;"></textarea>
+            <input type="hidden" name="signature_id" value="<?php echo $id ?>" />
+            <input type="hidden" name="action" value="add_comment" />
+        </form>
     </div>
 </div>
 

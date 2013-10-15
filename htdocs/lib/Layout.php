@@ -139,7 +139,6 @@ class Layout
   </head>
   <body>
 	<script type="text/javascript">
-	//<![CDATA[
 	  $(function() {
 		  $( ".toolbarbutton" ).button();
 	  
@@ -150,7 +149,12 @@ class Layout
 	  */
 	  
 	  });
-	//]]>
+
+	  function scrollDown(elem) {
+		var scrollHeight = Math.max(elem[0].scrollHeight, elem[0].clientHeight);
+		elem[0].scrollTop = scrollHeight - elem[0].clientHeight;	  
+	  }
+
 	</script>
 
     <div style="padding-top:10px;">

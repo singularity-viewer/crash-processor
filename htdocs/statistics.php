@@ -21,6 +21,7 @@ $filter->render();
             autoOpen: false,
             width: 800,
             height: "auto",
+            position: "top",
         });
         
         $(".comment_link").each(function() {
