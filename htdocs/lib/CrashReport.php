@@ -303,6 +303,13 @@ class CrashReport
             {
                 $function = $f->function;
             }
+            
+            if (preg_match("/^LLError::/", $f->function))
+            {
+                $function = null;
+                $singu_function = null;
+            }
+           
         }
         
         if ($function == $singu_function)

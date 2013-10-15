@@ -123,7 +123,7 @@ $filter->render();
         <th>Operating System</th>
         <th>GPU</th>
         <th>Grid (region)</th>
-        <th></th>
+        <th>Type</th>
     </tr>
 <?php for ($i=0; $i<count($reports); $i++): ?>
     <tr class="rowhighlight" data-signature-id="<?php echo $reports[$i]->signature_id ?>" data-id="<?php echo $reports[$i]->id ?>">
@@ -132,7 +132,7 @@ $filter->render();
         <td><?php lk($reports[$i]->id, $reports[$i]->os) ?></td>
         <td><?php lk($reports[$i]->id, $reports[$i]->gpu) ?></td>
         <td><?php lk($reports[$i]->id, $reports[$i]->grid . " (" . $reports[$i]->region . ")") ?></td>
-        <td style="text-align: right"><a href="<?php echo URL_ROOT . "/crashes.php?signature_id=" . $reports[$i]->signature_id ?>">Similar</a></td>
+        <td><a href="<?php echo URL_ROOT . "/crashes.php?signature_id=" . $reports[$i]->signature_id ?>"><?php echo $reports[$i]->signature_id ?> </a></td>
     </tr>
 <?php endfor ?>
 </table>
