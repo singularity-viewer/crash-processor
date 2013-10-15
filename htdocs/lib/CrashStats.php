@@ -27,7 +27,7 @@ class CrashStats
         $where = $this->filter->getWhere();
         $q = "select count(r.id) as nr, s.id as signature_id, s.signature as signature_text, s.has_comments from reports r join signature s on r.signature_id = s.id $where group by signature_id order by nr desc";
         $q .= kl_str_sql(" limit !i", 100);
-        // if (false !== $cached = Memc::getq($q)) return $cached;
+        if (false !== $cached = Memc::getq($q)) return $cached;
 
         if (!$res = DBH::$db->query($q))
         {
@@ -41,7 +41,7 @@ class CrashStats
             $ret[] = $r;
         }
         
-        // Memc::setq($q, $ret);
+        Memc::setq($q, $ret);
         return $ret;
     }
     

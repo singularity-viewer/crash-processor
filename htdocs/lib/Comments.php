@@ -6,6 +6,7 @@ class Comments
     {
         $q = kl_str_sql("update signature set has_comments=(select count(*) as count from comment where signature_id=!i) where id=!i", $id, $id);
         DBH::$db->query($q);
+        Memc::flush();
     }
 
     function addSignatureComment($id, $text)
