@@ -20,15 +20,17 @@ $filter->render();
             modal: true,
             autoOpen: false,
             width: 800,
-            height: 500,
+            height: "auto",
         });
         
         $(".comment_link").each(function() {
             var $link = $(this);
             var signature_id = $link.data("signature-id");
             
-            $link.on("click", function() {
-                $dialog.dialog("option", "title", "Crash signature " + signature_id);
+            $link.on("click", function(e) {
+                e.preventDefault();
+                
+                //$dialog.dialog("option", "title", "Crash signature " + signature_id);
                 $dialog.dialog("open");
                 
                 $.ajax({
@@ -83,10 +85,15 @@ $filter->render();
         if ($txt) $txt .= "<br/><br/>";
         if ($parts[2]) $txt .= preg_replace("/((::|&lt;|&gt;|,|\\(|\\)))/", "<wbr/>\\1<wbr/>", htmlentities($parts[2]));
         if (!$txt) $txt = "&nbsp;";
+        $ctext = "Comments";
+        if ($r->has_comments)
+        {
+            $ctext .= "&nbsp;({$r->has_comments})";
+        }
 ?>
             <tr class="rowhighlight">
                 <td style="text-align: right"><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($r->nr) ?></a></td>
-                <td><a href="#" class="comment_link" data-signature-id="<?php echo htmlentities($r->signature_id) ?>">Comments</a></td>
+                <td><a href="<?php echo URL_ROOT . "/comments.php?signature_id=" . $r->signature_id ?>" class="comment_link" data-signature-id="<?php echo htmlentities($r->signature_id) ?>"><?php echo $ctext ?></a></td>
                 <td><a href="<?php echo rl_s($r) ?>"><?php echo htmlentities($parts[0]) ?></a></td>
                 <td><a href="<?php echo rl_s($r) ?>"><?php echo $txt ?></a></td>
             </tr>

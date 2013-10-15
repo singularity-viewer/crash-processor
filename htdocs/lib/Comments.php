@@ -60,7 +60,7 @@ class Comments
     <div style="float: left; display: inline-block; ">
         <img style="border-radius: 5px; margin-top: 3px; border: 1px solid #444; filter: alpha(opacity=80); opacity: 0.8;" src="<?php echo $avatar ?>" />
     </div>
-    <div class="ui-corner-all" style="margin: 2em 0; background-color: #252525; margin-left: 60px; margin-right: 20px;">
+    <div class="ui-corner-all" style="margin: 1em 0; background-color: #252525; margin-left: 60px; margin-right: 20px;">
         <div style="padding: 5px; border-bottom: 1px solid #444; vertical-align: middle;">
             <?php echo $del . htmlentities($from) ?>
         </div>
@@ -152,12 +152,12 @@ class Comments
 </script>
 
 <div id="comments_frame">
-    <div id="comments_scroller" style="height: 300px; overflow-y: auto;"><?php echo self::renderComments($id) ?></div>
-    <div id="new_comment" style="height: 100px;">
+    <p>Comments for crash signature <?php echo $id ?></p>
+    <div id="comments_scroller" style="max-height: 300px; overflow-y: auto;"><?php echo self::renderComments($id) ?></div>
+    <div id="new_comment">
         <a id="add_comment">Add comment</a>
-        <textarea id="comment_input" class="ui-widget-content" style="display: block; width: 100%; height: 100%; margin-top: 5px;"></textarea>
+        <textarea id="comment_input" class="ui-widget-content" style="width: 100%; display: block; height: 100px; margin-top: 5px;"></textarea>
     </div>
-    <div style="height: 30px;"></div>
 </div>
 
 <?php

@@ -40,6 +40,7 @@ Layout::header();
 <?php if (strlen($full["SettingsXml"])): ?>
     <li><a href="#tabs-5">Settings</a></li>
 <?php endif ?>
+    <li><a href="#tabs-6">Comments</a></li>
 </ul>
 
 <!-- Stacks tab -->
@@ -179,7 +180,17 @@ $(function() {
 <?php endif ?>
 <!-- Settings tab -->
 
+
+<!-- comments tab -->
+<div id="tabs-6">
 </div>
+<!-- comments tab -->
+
+<div id="tabs_footer" style="max-width: 800px; padding: 10px;">
+    <?php Comments::renderCommentPanel($report->signature_id) ?>
+</div>
+
+</div> <!-- end of tabs panel -->
 
 <?php
 Layout::footer();
