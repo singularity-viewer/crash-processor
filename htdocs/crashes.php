@@ -116,6 +116,32 @@ $filter->render();
 
 <br/>
 
+<?php
+$signature_id = (int)$_REQUEST["signature_id"];
+if ($signature_id):
+    CrashStats::getSignature($signature_id);
+?>
+
+<table class="ui-widget ui-widget-content ui-corner-all" style="width: 100%">
+    <thead>
+        <tr class="ui-widget-header">
+            <th style="width: 40%">Signature</th>
+            <th style="width: 60%">Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="ui-helper-reset">
+            <td><?php echo CrashStats::renderSignature($signature_id) ?></td>
+            <td><?php echo Comments::renderCommentPanel($signature_id) ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<br/>
+
+<?php endif ?>
+
+    
 <table width="100%" class="jtable">
     <tr>
         <th>ID</th>

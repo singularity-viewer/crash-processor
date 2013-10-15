@@ -45,7 +45,7 @@ class CrashStats
         return $ret;
     }
     
-    function getSignature($id)
+    static function getSignature($id)
     {
         $ret = new stdClass;
         $q = kl_str_sql("select * from signature where id=!i", $id);
@@ -62,6 +62,22 @@ class CrashStats
         }
         
         return false;
+    }
+    
+    static function renderSignature($id)
+    {
+        if (!$r = self::getSignature($id)) return "";
+
+        $parts = explode("|", $r->signature);
+        $txt = "";
+        if ($parts[1]) $txt .= preg_replace("/((::|&lt;|&gt;|,|\\(|\\)))/", "<wbr/>\\1<wbr/>", htmlentities($parts[1]));
+        if ($txt) $txt .= "<br/><br/>";
+        if ($parts[2]) $txt .= preg_replace("/((::|&lt;|&gt;|,|\\(|\\)))/", "<wbr/>\\1<wbr/>", htmlentities($parts[2]));
+        
+        $ret = "<p>Module: " . $parts[0];
+        if ($txt) $ret .= "<br/><br/>" . $txt . "</p>";
+        
+        return $ret;
     }
     
     function getGPUStats()

@@ -124,6 +124,10 @@ $(function() {
         <td><?php echo htmlentities($report->crash_reason . " at " . $report->crash_address . " thread " . $report->crash_thread) ?></td>
     </tr>
     <tr>
+        <th>Crash Type</th>
+        <td><a href="crashes.php?signature_id=<?php echo $report->signature_id ?>"><?php echo $report->signature_id ?></a></td>
+    </tr>
+    <tr>
         <th>Minidump</th>
         <td><a href="download.php/singularity<?php echo (int)$report->id ?>.dmp?report_id=<?php echo (int)$report->id ?>">Download</a></td>
     </tr>
