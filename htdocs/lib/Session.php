@@ -263,6 +263,11 @@ class Session
 	{
 		return ($this->authenticated && $this->user->isAdmin());
 	}
+	
+	static public function GC()
+	{
+		DBH::$db->query("delete from session where expires > current_timestamp");
+	}
 }
 
 /*

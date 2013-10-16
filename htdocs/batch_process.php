@@ -1,5 +1,6 @@
 <?php
 
+define("NO_SESSION", 1);
 define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 
@@ -67,3 +68,5 @@ if ($nr)
     $rp = $nr != 1 ? "reports" : "report";
     IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new $rp. http://crash.singularityviewer.org/");
 }
+
+Session::GC();
