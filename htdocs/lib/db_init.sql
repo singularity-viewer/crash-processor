@@ -70,3 +70,12 @@ create table comment(
     commented timestamp not null default current_timestamp,
     comment text
 );
+
+create table builds(
+    build_nr integer,
+    chan varchar(64),
+    version varchar(64),
+    hash varchar(64),
+    modified timestamp,
+    primary key(chan, build_nr)
+);

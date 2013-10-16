@@ -380,4 +380,27 @@ class CrashReport
         $this->raw_stacktrace = $stacktrace;
         $this->parseStackTrace($this->raw_stacktrace);
     }
+    
+    static function getBuildsMap()
+    {
+        $ret = array();
+        $q = "select * from builds order by chan asc, build_nr desc";
+        if (false !== $cached = Memc::getq($q)) return $cached;
+       
+        if (!$res = DBH::$db->query($q)) return;
+        
+        while ($row = DBH::$db->fetchRow($res))
+        {
+            $build = new stdClass;
+            DBH::$db->loadFromDbRow($build, $res, $row);
+            if (!$ret[$build->chan])
+            {
+                $ret[$build->chan] = array();
+            }
+            $ret[$build->chan][$build->version] = $build->hash;
+        }
+        
+        Memc::setq($q, $ret);
+        return $ret;
+    }
 }

@@ -90,7 +90,7 @@ $filter->render();
                 setDialog($link.data("id"));
                 $dialog.dialog("option","position", getPos(e));
                 $dialog.dialog("option","title", "Crash signature " + signature_id);
-                $link.delay(300).queue(function() {
+                $link.delay(1000).queue(function() {
                     if (!$dialog.dialog("isOpen"))
                     {
                         $dialog.dialog("open");

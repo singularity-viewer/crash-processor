@@ -132,8 +132,8 @@ class Layout
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="<?php print URL_ROOT ?>/css/singularity/jquery-ui-1.10.3.custom.css"/>
     <link rel="stylesheet" type="text/css" href="<?php print URL_ROOT ?>/css/singularity/singularity.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <link rel="shortcut icon" href="<?php print IMG_ROOT ?>/favicon.ico" type="image/x-icon" />
     <title>Singularity Viewer - Automated Crash Report Processing System</title>
   </head>
