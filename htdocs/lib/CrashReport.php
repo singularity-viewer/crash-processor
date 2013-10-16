@@ -27,9 +27,9 @@ class CrashReport
     
     public static $all_signatures;
     
-    function htmlFrame($f)
+    function htmlFrame($f, $chan, $version)
     {
-        static $urlBase = "https://github.com/singularity-viewer/SingularityViewer/blob/master";
+        $urlBase = "https://github.com/singularity-viewer/SingularityViewer/blob/" . self::getHash($chan, $version);
         
         $ret = "";
         $link = "";
@@ -402,5 +402,21 @@ class CrashReport
         
         Memc::setq($q, $ret);
         return $ret;
+    }
+    
+    static $builds_map = null;
+    
+    static function getHash($chan, $version)
+    {
+        if (null == self::$builds_map)
+        {
+            self::$builds_map = self::getBuildsMap();
+        }
+        
+        if (!self::$builds_map[$chan]) $chan = "SingularityAlpha";
+        
+        if (!self::$builds_map[$chan][$version]) return "master";
+        
+        return self::$builds_map[$chan][$version];
     }
 }

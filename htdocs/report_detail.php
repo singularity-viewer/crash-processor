@@ -62,7 +62,7 @@ $(function() {
     <tr>
         <td width="5%" style="text-align: right;"><?php echo $frameID ?></td>
         <td width="20%"><?php echo htmlentities($f->module) ?></td>
-        <td width="75%"><?php echo CrashReport::htmlFrame($f) ?></td>
+        <td width="75%"><?php echo CrashReport::htmlFrame($f, $report->client_channel, $report->client_version) ?></td>
     </tr>
 <?php endfor ?>
 </table>
