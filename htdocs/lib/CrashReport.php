@@ -265,7 +265,7 @@ class CrashReport
             {
                 $f->module = "llcommon";
             }
-            else if (preg_match("/(kernel|ntdll).*\\.dll/i", $f->module))
+            else if (preg_match("/(kernel|ntdll|msvcr).*\\.dll/i", $f->module))
             {
                 $f->module = "windows-runtime";
             } else if (preg_match("/libc.*\\.so/i", $f->module))
