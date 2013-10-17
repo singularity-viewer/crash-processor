@@ -92,7 +92,7 @@ returns varchar(32) deterministic
         set i = 1;
         set ret = '';
         while (i < 5) do
-            set ret = concat(ret, SUBSTRING_INDEX(SUBSTRING_INDEX(ver , '.', i ),'.',-1));
+            set ret = concat(ret, lpad(SUBSTRING_INDEX(SUBSTRING_INDEX(ver , '.', i ), '.' , -1), 6, '0'));
             set i = i + 1;
         end while;
        return ret;
