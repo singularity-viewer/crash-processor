@@ -5,6 +5,8 @@ class SearchFilter
     public $os;
     public $chan;
     public $version;
+    public $version_min;
+    public $version_max;
     public $grid;
     public $region;
     public $gpu;
@@ -19,7 +21,7 @@ class SearchFilter
     public $offset = 0;
     public $page = 0;
     
-    var $fields = array("os", "chan", "version", "grid", "region", "gpu", "stacktrace", "signature_id", "limit", "offset");
+    var $fields = array("os", "chan", "version", "version_min", "version_max", "grid", "region", "gpu", "stacktrace", "signature_id", "limit", "offset");
     
     function __construct()
     {
@@ -73,6 +75,8 @@ class SearchFilter
         $cond = array();
         if ($this->os) $cond[] = kl_str_sql("os_type=!s", $this->os);
         if ($this->version) $cond[] = kl_str_sql("client_version=!s", $this->version);
+        if ($this->version_min) $cond[] = kl_str_sql("client_version_s>=!s", CrashReport::sortableVersion($this->version_min));
+        if ($this->version_max) $cond[] = kl_str_sql("client_version_s<=!s", CrashReport::sortableVersion($this->version_max));
         if ($this->chan) $cond[] = kl_str_sql("client_channel=!s", $this->chan);
         if ($this->grid) $cond[] = kl_str_sql("grid=!s", $this->grid);
         if ($this->region) $cond[] = kl_str_sql("region=!s", $this->region);
@@ -152,6 +156,29 @@ class SearchFilter
     .click(function() {
        $(this).closest("form").submit();
     });
+    
+    $("#version").on("change", function(){
+        if ($(this)[0].selectedIndex > 0) {
+            $("#version_min")[0].selectedIndex = 0;
+            $("#version_max")[0].selectedIndex = 0;
+        }
+        $(this).closest("form").submit();
+    });
+
+    $("#version_min").on("change", function(){
+        if ($(this)[0].selectedIndex > 0) {
+            $("#version")[0].selectedIndex = 0;
+        }
+        $(this).closest("form").submit();
+    });
+
+    $("#version_max").on("change", function(){
+        if ($(this)[0].selectedIndex > 0) {
+            $("#version")[0].selectedIndex = 0;
+        }
+        $(this).closest("form").submit();
+    });
+
   });
 
 </script>
@@ -168,15 +195,37 @@ class SearchFilter
             <input type="radio" id="chan3" name="chan" value="SingularityAlpha" <?php echo $this->chan == "SingularityAlpha" ? 'checked="checked"' : '' ?>/><label for="chan3">SingularityAlpha</label>
         </div>
     </div>
-    
+
     <div class="filterelem">
         Version<br/>
-        <select class="ui-widget-content" name="version" onchange="this.form.submit();" style="width: 100px;"> 
+        <select id="version" class="ui-widget-content" name="version" style="width: 100px;"> 
             <option value="" <?php echo !$this->version ? 'selected="selected"' : '' ?>>All</option>
 <?php
 for($i = 0; $i < count($ver); $i++)
 {
     $sel = $this->version == $ver[$i] ? ' selected="selected"' : '';
+    print '<option value="' . htmlentities($ver[$i]) . '"' . $sel . '>' . htmlentities($ver[$i]). '</option>';
+}
+?>
+        </select>
+
+        <select id="version_min" class="ui-widget-content" name="version_min" style="width: 100px;"> 
+            <option value="" <?php echo !$this->version_min ? 'selected="selected"' : '' ?>>Min</option>
+<?php
+for($i = 0; $i < count($ver); $i++)
+{
+    $sel = $this->version_min == $ver[$i] ? ' selected="selected"' : '';
+    print '<option value="' . htmlentities($ver[$i]) . '"' . $sel . '>' . htmlentities($ver[$i]). '</option>';
+}
+?>
+        </select>
+
+        <select id="version_max" class="ui-widget-content" name="version_max" style="width: 100px;"> 
+            <option value="" <?php echo !$this->version_max ? 'selected="selected"' : '' ?>>Max</option>
+<?php
+for($i = 0; $i < count($ver); $i++)
+{
+    $sel = $this->version_max == $ver[$i] ? ' selected="selected"' : '';
     print '<option value="' . htmlentities($ver[$i]) . '"' . $sel . '>' . htmlentities($ver[$i]). '</option>';
 }
 ?>
@@ -192,6 +241,7 @@ for($i = 0; $i < count($ver); $i++)
             <input type="radio" id="os_mac" name="os" value="Mac OS X" <?php echo $this->os == "Mac OS X" ? 'checked="checked"' : '' ?> /><label for="os_mac">Mac</label>
         </div>
     </div>
+
 
     <div class="filterelem">
         Grid<br/>
