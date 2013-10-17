@@ -7,7 +7,7 @@ $S->requireUser();
 $filter = new SearchFilter();
 $stats = new CrashStats($filter);
 
-Layout::header();
+Layout::header($filter->renderPaginator($stats->getNumTopCrashers()));
 $filter->render();
 ?>
 <script>

@@ -3,7 +3,7 @@ class Memc
 {
     static $mem;
     static $active = false;
-    static $expire = 3600;
+    static $expire = 7200;
 	
     function init()
     {

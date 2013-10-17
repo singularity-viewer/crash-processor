@@ -38,6 +38,7 @@ create table reports(
     id integer not null primary key,
     reported timestamp,
     client_version varchar(32),
+    client_version_s varchar(32),
     client_channel varchar(32),
     os varchar(128),
     os_type varchar(32),
@@ -79,3 +80,21 @@ create table builds(
     modified timestamp,
     primary key(chan, build_nr)
 );
+
+drop function ver_expand;
+
+delimiter $$
+create function ver_expand(ver varchar(32))
+returns varchar(32) deterministic
+    begin
+        declare ret varchar(32);
+        declare i int;
+        set i = 1;
+        set ret = '';
+        while (i < 5) do
+            set ret = concat(ret, SUBSTRING_INDEX(SUBSTRING_INDEX(ver , '.', i ),'.',-1));
+            set i = i + 1;
+        end while;
+       return ret;
+    end$$
+delimiter ;

@@ -129,6 +129,18 @@ class CrashReport
         DBH::$db->query(kl_str_sql("delete from reports where id=!i", $this->id));
     }
     
+    static function sortableVersion($v)
+    {
+        $parts = explode(".", $v);
+        $ret = "";
+        foreach($parts as $p)
+        {
+            $ret .= sprintf("%06d", (int)$p);
+        }
+        
+        return $ret;
+    }
+    
     function save()
     {
         $this->delete();
@@ -136,6 +148,7 @@ class CrashReport
                         id,
                         reported,
                         client_version,
+                        client_version_s,
                         client_channel,
                         os,
                         os_type,
@@ -150,10 +163,11 @@ class CrashReport
                         crash_address,
                         crash_thread,
                         raw_stacktrace
-                        ) values (!i, !t, !s, !s, !s, !s, !s, !s, !s, !s, !i, !s, !s, !s, !s, !i, !s)",
+                        ) values (!i, !t, !s, !s, !s, !s, !s, !s, !s, !s, !s, !i, !s, !s, !s, !s, !i, !s)",
                         $this->id,
                         $this->reported,
                         $this->client_version,
+                        self::sortableVersion($this->client_version),
                         $this->client_channel,
                         $this->os,
                         $this->os_type,

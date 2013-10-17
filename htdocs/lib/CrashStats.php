@@ -20,13 +20,34 @@ class CrashStats
     {
         $this->filter = $filter;
     }
+
+    function getNumTopCrashers()
+    {
+        $ret = 0;
+        $where = $this->filter->getWhere();
+        $q = "select count(1) as total from (select s.id from reports r join signature s on r.signature_id = s.id $where group by signature_id) as reports";
+        if (false !== $cached = Memc::getq($q)) return $cached;
+
+        if (!$res = DBH::$db->query($q))
+        {
+            return $ret;
+        }
+        
+        if ($row = DBH::$db->fetchRow($res))
+        {
+            $ret = (int)$row["total"];
+        }
+        
+        Memc::setq($q, $ret);
+        return $ret;
+    }
     
     function getTopCrashers()
     {
         $ret = array();
         $where = $this->filter->getWhere();
         $q = "select count(r.id) as nr, s.id as signature_id, s.signature as signature_text, s.has_comments from reports r join signature s on r.signature_id = s.id $where group by signature_id order by nr desc";
-        $q .= kl_str_sql(" limit !i", 100);
+        $q .= kl_str_sql(" limit !i offset !i", $this->filter->limit, $this->filter->offset);
         if (false !== $cached = Memc::getq($q)) return $cached;
 
         if (!$res = DBH::$db->query($q))
