@@ -294,7 +294,7 @@ class CrashReport
             } else if (preg_match("/(atiogl|fglrx)/i", $f->module))
             {
                 $f->module = "ati-driver";
-            } else if (preg_match("/ig.*icd/i", $f->module))
+            } else if (preg_match("/ig.*(icd|dev)/i", $f->module))
             {
                 $f->module = "intel-driver";
             }
