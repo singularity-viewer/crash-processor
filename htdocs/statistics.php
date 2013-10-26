@@ -65,7 +65,7 @@ $filter->render();
     function rl_s($r)
     {
         global $filter;
-        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&signature_id=" . urlencode($r->signature_id);
+        return URL_ROOT . "/crashes.php?signature_id=" . urlencode($r->signature_id);
     }
     $sigs = $stats->getTopCrashers();
     $c = count($sigs);
@@ -112,7 +112,7 @@ $filter->render();
     function rl_g($r)
     {
         global $filter;
-        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&gpu=" . urlencode($r->gpu);
+        return URL_ROOT . "/crashes.php?gpu=" . urlencode($r->gpu);
     }
     $gpus = $stats->getGPUStats();
     $c = count($gpus);
@@ -142,7 +142,7 @@ $filter->render();
     function rl_o($r)
     {
         global $filter;
-        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&os=" . urlencode($r->os_type);
+        return URL_ROOT . "/crashes.php?os=" . urlencode($r->os_type);
     }
     $oses = $stats->getOSStats();
     $c = count($oses);
@@ -172,7 +172,7 @@ $filter->render();
     function rl($r)
     {
         global $filter;
-        return URL_ROOT . "/crashes.php?" . $filter->getURLArgs() . "&region=" . urlencode($r->region) . "&grid=" . urlencode($r->grid);
+        return URL_ROOT . "/crashes.php?region=" . urlencode($r->region) . "&grid=" . urlencode($r->grid);
     }
     $regions = $stats->getRegionStats();
     $c = count($regions);
