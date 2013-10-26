@@ -4,6 +4,8 @@ define("NO_SESSION", 1);
 define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 
+$blacklist = array("1.8.3.5282");
+
 set_time_limit(0);
 
 if (PHP_SAPI != "cli")
@@ -38,13 +40,19 @@ foreach($reports as $id)
     $miniDump = $r["Minidump"];
     if (!$miniDump || !($miniDump->getData()))
     {
-        ReportParser::setProcessed($id, 1);
+        ReportParser::deleteRaw($id);
         continue;
     }
 
     if (!($version = $r["clientVersion"])|| !($chan = $r["clientChannel"]))
     {
-        ReportParser::setProcessed($id, 1);
+        ReportParser::deleteRaw($id);
+        continue;
+    }
+
+    if (in_array($version, $blacklist))
+    {
+        ReportParser::deleteRaw($id);
         continue;
     }
 

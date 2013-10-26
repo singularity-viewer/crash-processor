@@ -74,6 +74,20 @@ class ReportParser
         }
     }
     
+    function deleteRaw($id)
+    {
+        $q = kl_str_sql("delete from raw_reports where report_id=!i", $id);
+        
+        if ($res = DBH::$db->query($q))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     function getUnprocessedIDs()
     {
         $ret = array();
