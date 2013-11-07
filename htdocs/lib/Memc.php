@@ -7,7 +7,7 @@ class Memc
 	
     function init()
     {
-		if (!class_exists("Memcached")) return;
+		if (!class_exists("Memcached", false)) return;
 		
         self::$mem = new Memcached("scr");
 		$servers = self::$mem->getServerList();

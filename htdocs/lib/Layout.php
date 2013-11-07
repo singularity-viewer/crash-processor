@@ -142,12 +142,6 @@ class Layout
 	  $(function() {
 		  $( ".toolbarbutton" ).button();
 	  
-	  /*    
-		  $( ".rowhighlight" ).on("mousedown", function(e) {
-			$(this).addClass("ui-state-disabled");
-		  });
-	  */
-	  
 	  });
 
 	  function scrollDown(elem) {
@@ -159,7 +153,7 @@ class Layout
 
     <div style="padding-top:10px;">
       <div style="display: inline-block;  margin-right: 30px;">
-	    <a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="100px" height="100px"/></a>
+	    <a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="70px" height="70px"/></a>
       </div>
       <div style="display: inline-block;color: #eee; padding-bottom: 10px; vertical-align: bottom;">
 	    <a href="<?php echo URL_ROOT ?>" style="font-size: 3em; font-weight: bold;">Singularity Viewer</a>
