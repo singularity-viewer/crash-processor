@@ -152,10 +152,10 @@ class Layout
 	</script>
 
     <div style="padding-top:10px;">
-      <div style="display: inline-block;  margin-right: 30px;">
+      <div style="display: inline-block;">
 	    <a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="70px" height="70px"/></a>
       </div>
-      <div style="display: inline-block;color: #eee; padding-bottom: 10px; vertical-align: bottom;">
+      <div style="display: inline-block; margin-left: 15px; color: #eee; padding-bottom: 10px; vertical-align: bottom;">
 	    <a href="<?php echo URL_ROOT ?>" style="font-size: 3em; font-weight: bold;">Singularity Viewer</a>
 	    <br/>
 	    <span style="font-size: 1.6em;">Automated Crash Report Processing</span>
