@@ -153,7 +153,7 @@ class SearchFilter
   $(function() {
     $( ".radio" )
     .buttonset()
-    .click(function() {
+    .on("change", function() {
        $(this).closest("form").submit();
     });
     
