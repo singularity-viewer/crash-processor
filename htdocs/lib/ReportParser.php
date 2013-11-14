@@ -53,6 +53,7 @@ class ReportParser
             //var_dump($client);
             $data->report["clientVersion"] = $client["MajorVersion"] . "." . $client["MinorVersion"] . "." . $client["PatchVersion"] . "." .$client["BuildVersion"];
             $data->report["clientChannel"] = str_replace(" ", "", $client["Name"]);
+            $data->report["clientArch"] = $client["Architecture"];
         }
         
         // $data->report["raw"] = $row;

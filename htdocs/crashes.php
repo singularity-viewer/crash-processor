@@ -155,7 +155,7 @@ if ($signature_id):
     <tr class="rowhighlight" data-signature-id="<?php echo $reports[$i]->signature_id ?>" data-id="<?php echo $reports[$i]->id ?>">
         <td><?php lk($reports[$i]->id, $reports[$i]->id) ?></td>
         <td><?php lk($reports[$i]->id, $reports[$i]->client_channel . " " . $reports[$i]->client_version) ?></td>
-        <td><?php lk($reports[$i]->id, $reports[$i]->os) ?></td>
+        <td><?php lk($reports[$i]->id, $reports[$i]->os . ($reports[$i]->client_arch ? " (" . $reports[$i]->client_arch . ")" : ""))?></td>
         <td><?php lk($reports[$i]->id, $reports[$i]->gpu) ?></td>
         <td><?php lk($reports[$i]->id, $reports[$i]->grid . " (" . $reports[$i]->region . ")") ?></td>
         <td><a href="<?php echo URL_ROOT . "/crashes.php?signature_id=" . $reports[$i]->signature_id ?>"><?php echo $reports[$i]->signature_id ?> </a></td>

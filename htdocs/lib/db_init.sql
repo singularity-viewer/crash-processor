@@ -40,6 +40,7 @@ create table reports(
     client_version varchar(32),
     client_version_s varchar(32),
     client_channel varchar(32),
+    client_arch varchar(16),
     os varchar(128),
     os_type varchar(32),
     os_version varchar(128),

@@ -6,6 +6,7 @@ class CrashReport
     public $reported;
     public $client_version;
     public $client_channel;
+    public $client_arch;
     public $os;
     public $os_type;
     public $os_version;
@@ -83,7 +84,7 @@ class CrashReport
         }
     }
     
-    function getReports($filter, $fields = "id, reported, client_version, client_channel, os, gpu, grid, region, signature_id")
+    function getReports($filter, $fields = "id, reported, client_version, client_channel, client_arch, os, gpu, grid, region, signature_id")
     {
         $ret = array();
         $q = "select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset);
@@ -150,6 +151,7 @@ class CrashReport
                         client_version,
                         client_version_s,
                         client_channel,
+                        client_arch,
                         os,
                         os_type,
                         os_version,
@@ -163,12 +165,13 @@ class CrashReport
                         crash_address,
                         crash_thread,
                         raw_stacktrace
-                        ) values (!i, !t, !s, !s, !s, !s, !s, !s, !s, !s, !s, !i, !s, !s, !s, !s, !i, !s)",
+                        ) values (!i, !t, !s, !s, !s, !s, !s,!s, !s, !s, !s, !s, !i, !s, !s, !s, !s, !i, !s)",
                         $this->id,
                         $this->reported,
                         $this->client_version,
                         self::sortableVersion($this->client_version),
                         $this->client_channel,
+                        $this->client_arch,
                         $this->os,
                         $this->os_type,
                         $this->os_version,
@@ -383,6 +386,7 @@ class CrashReport
         $this->reported = $data["reported"];
         $this->client_version = $data["clientVersion"];
         $this->client_channel = $data["clientChannel"];
+        $this->client_arch = $data["clientArch"];
         $this->os = $data["DebugLog"]["OSInfo"];
         $this->gpu = $data["DebugLog"]["GraphicsCard"];
         $this->cpu = $data["DebugLog"]["CPUInfo"]["CPUString"];

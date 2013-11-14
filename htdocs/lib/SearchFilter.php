@@ -25,12 +25,23 @@ class SearchFilter
     
     function __construct()
     {
+        global $S;
+        
         foreach($this->fields as $field)
         {
             if (strlen($_GET[$field]))
             {
                 $this->$field = trim($_GET[$field]);
             }
+        }
+        
+        if (!isset($_REQUEST["chan"]))
+        {
+            $this->chan = $S->persist->chan;
+        }
+        else
+        {
+            $S->persist->chan = $_REQUEST["chan"];
         }
 
         if (in_array($_GET["sort_by"], self::$sort_keys))

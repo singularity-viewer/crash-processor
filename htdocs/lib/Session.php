@@ -186,7 +186,6 @@ class Session
 			$this->user = $user;
 			$this->user_id = $user->user_id;
 			$this->authenticated = true;
-			$this->persist->active_order = null;	
 			$this->update();
 			return true;
 		}
