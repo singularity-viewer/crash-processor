@@ -15,13 +15,13 @@ if (strlen($report))
     $query = kl_str_sql('insert into raw_reports(raw_data) values (!s)', $report);
     if ($res = DBH::$db->query($query))
     {
-	$report_id = DBH::$db->insertID();
+        $report_id = DBH::$db->insertID();
     }
 }
 
 
 header("Content-Type: application/llsd+xml");
-print '<?xml version="1.0" ?><llsd><map><key>message</key><string>Report saved with report_id=' . $report_id . '</string><key>success</key><boolean>true</boolean></map></llsd>';
+print '<?xml version="1.0" ?><llsd><map><key>message</key><string>Report saved with report_id=' . $report_id . '</string><key>success</key><boolean>true</boolean><key>report_id</key><integer>' . $report_id . '</integer></map></llsd>';
 /*
  * Local variables:
  * tab-width: 4
