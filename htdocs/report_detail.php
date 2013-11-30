@@ -2,6 +2,8 @@
 
 define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
+require_once SITE_ROOT.'/lib/llsd_classes.php';
+require_once SITE_ROOT.'/lib/llsd_decode.php';
 $S->requireUser();
 
 $report = CrashReport::getReport((int)$_GET["id"]);
@@ -175,12 +177,46 @@ $(function() {
 <!-- Log tab -->
 
 <!-- Settings tab -->
-<?php if (strlen($full["SettingsXml"])): ?>
+<?php if (strlen($full["SettingsXml"]) && count($settings = llsd_decode($full["SettingsXml"]))):
+
+$first = array();
+$second = array();
+foreach ($settings as $key => $val)
+{
+    if (is_array($val["Value"]))
+    {
+        $val["Value"] = "[" . implode(", ", $val["Value"]) . "]";
+    }
+    
+    if ($val["Type"] == "Boolean")
+    {
+        $val["Value"] = $val["Value"] ? "True" : "False";
+    }
+
+    if ($val["Type"] != "Rect")
+    {
+        $first[$key] = $val;
+    }
+    else
+    {
+        $second[$key] = $val;
+    }
+}
+
+$settings = array_merge($first, $second);
+?>
 <div id="tabs-5">
-<pre>
-<?php echo htmlentities($full["SettingsXml"]) ?>
-</pre>
-</div>
+
+<table class="jtable noborder">
+<?php foreach($settings as $key => $val): ?>
+    <tr class="rowhighlight" title="<?php echo htmlentities($val["Comment"]) ?>">
+        <td><?php echo htmlentities($key) ?></td>
+        <td><?php echo htmlentities($val["Type"]) ?></td>
+        <td><?php echo htmlentities($val["Value"]) ?></td>
+    </tr>
+<?php endforeach ?>
+</table>    
+
 <?php endif ?>
 <!-- Settings tab -->
 
