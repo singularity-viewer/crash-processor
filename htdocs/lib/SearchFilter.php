@@ -10,7 +10,8 @@ class SearchFilter
     public $grid;
     public $region;
     public $gpu;
-    public $stacktrace;
+    public $search_type;
+    public $search_for;
     public $signature_id;
     
     public $sort_by;
@@ -21,7 +22,7 @@ class SearchFilter
     public $offset = 0;
     public $page = 0;
     
-    var $fields = array("os", "chan", "version", "version_min", "version_max", "grid", "region", "gpu", "stacktrace", "signature_id", "limit", "offset");
+    var $fields = array("os", "chan", "version", "version_min", "version_max", "grid", "region", "gpu", "search_type", "search_for", "signature_id", "limit", "offset");
     
     function __construct()
     {
@@ -94,18 +95,20 @@ class SearchFilter
         if ($this->gpu) $cond[] = kl_str_sql("gpu=!s", $this->gpu);
         if ($this->signature_id) $cond[] = kl_str_sql("signature_id=!s", $this->signature_id);
         
-        if ($this->stacktrace)
+        if ($this->search_for)
         {
-            $parts = preg_split("/\\s+/", trim($this->stacktrace));
+            $fmap = array("stack" => "raw_stacktrace", "gpu" => "gpu", "os" => "os", "region" => "region");
+            $field = $fmap[$this->search_type];
+            $parts = preg_split("/\\s+/", trim($this->search_for));
             foreach($parts as $part)
             {
                 if ($part[0] == "-")
                 {
-                    $cond[] = kl_str_sql("raw_stacktrace not like !s", "%" . substr($part, 1) . "%");
+                    $cond[] = kl_str_sql("$field not like !s", "%" . substr($part, 1) . "%");
                 }
                 else
                 {
-                    $cond[] = kl_str_sql("raw_stacktrace like !s", "%{$part}%");
+                    $cond[] = kl_str_sql("$field like !s", "%{$part}%");
                 }
             }
         }
@@ -268,10 +271,21 @@ for($i = 0; $i < count($grids); $i++)
         </select>
     </div>
 
-    <div class="filterelem">
-        Stacktrace contains<br/>
-        <input class="ui-widget-content" type="text" name="stacktrace" value="<?php echo htmlentities($this->stacktrace) ?>" />
-        <input class="toolbarbutton" type="submit" name="do_search" value="Search" />
+    <div class="filterelem" style="padding-top: 8px;">
+        <div style="display: inline-block">
+            <br/>
+            <select class="ui-widget-content" name="search_type">
+                <option value="stack" <?php echo $this->search_type == "stack" ? ' selected="selected"' : "" ?>>Stacktrace</option>
+                <option value="gpu" <?php echo $this->search_type == "gpu" ? ' selected="selected"' : "" ?>>GPU</option>
+                <option value="os" <?php echo $this->search_type == "os" ? ' selected="selected"' : "" ?>>OS</option>
+                <option value="region" <?php echo $this->search_type == "region" ? ' selected="selected"' : "" ?>>Region</option>
+            </select>
+        </div>
+        <div style="display: inline-block">
+                    contains<br/>
+                    <input class="ui-widget-content" type="text" name="search_for" value="<?php echo htmlentities($this->search_for) ?>" />
+                    <input class="toolbarbutton" type="submit" name="do_search" value="Search" />
+        </div>
     </div>
 </div>
 
