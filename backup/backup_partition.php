@@ -13,6 +13,7 @@ class PartitionArchiver
     var $db_pass;
     var $db_host;
     var $part_delimiter;
+    var $full_filename = "singularity_full.sql.7z";
     var $prefix = "singularity_part_";
     var $suffix = ".sql.7z";
     var $part_id;
@@ -26,7 +27,7 @@ class PartitionArchiver
         $this->db_pass = $pass;
         $this->db_host = $host;
         
-        $this->cmd = "mysqldump"
+        $this->cmd = "mysqldump --single-transaction"
             . " -u" . escapeshellarg($this->db_user)
             . " -p" . escapeshellarg($this->db_pass)
             . ($this->db_host ? " -h" . escapeshellarg($this->db_host) : "")
@@ -90,11 +91,25 @@ class PartitionArchiver
     
     function backupToS3()
     {
-        system("s3cmd --rr sync --recursive --delete-removed --exclude '.git/*' --exclude 'logs/*'  " . escapeshellarg(realpath(dirname(__file__) . "/../")) . " s3://singularity-backup/crash-site/");
+        print "Backing up to S3\n";
+        
+        system("s3cmd --rr sync --recursive --delete-removed --exclude '.git/*' --exclude 'logs/*'  " . escapeshellarg(realpath(dirname(__file__) . "/../") . "/") . " s3://singularity-backup/crash-site/");
     }
    
+    function backupDB()
+    {
+        print "Making full database backup\n";
+        
+        $retval = 0;
+        system("rm -f " . escapeshellarg($this->full_filename));
+        system($this->cmd . ' | 7z a -si ' . escapeshellarg($this->full_filename) . ' >/dev/null 2>&1', $retval);
+        if ($retval !== 0) return false;
+    }
+
     function archivePart()
     {
+        print "Saving partition data to {$this->filename}\n";
+        
         $retval = 0;
         system($this->cmd . ' history_reports history_raw_reports | 7z a -si ' . escapeshellarg($this->filename) . ' >/dev/null 2>&1', $retval);
         if ($retval !== 0) return false;
@@ -113,9 +128,37 @@ class PartitionArchiver
         {
             if (!$this->archivePart()) return false;
         }
+        
+        $q = "select count(1) as nr from reports where id < {$this->part_delimiter}";
+        if (!$res = DBH::$db->query($q) OR !$row = DBH::$db->fetchRow($res)) return false;
+        $to_partition = (int)$row["nr"];
+        
+        if ($to_partition < 200)
+        {
+            print "$to_partition reports to partition off. Too few. Exiting...\n";
+            return true;
+        }
+        
+        print "$to_partition reports to partition off\n";
+        
+        print "Partitioning off raw_reports\n";
+        $q = "create table history_raw_reports as select * from raw_reports where report_id < " . $this->part_delimiter;
+        if (!$res = DBH::$db->query($q)) return false;
+        $q = "delete from raw_reports where report_id < {$this->part_delimiter} and processed <> 0";
+        if (!$res = DBH::$db->query($q)) return false;
+        
+        print "Partitioning off reports\n";
+        $q = "create table history_reports as select * from reports where id < " . $this->part_delimiter;
+        if (!$res = DBH::$db->query($q)) return false;
+        $q = "delete from reports where id < {$this->part_delimiter}";
+        if (!$res = DBH::$db->query($q)) return false;
+        
+        $this->archivePart();
     }
 }
 
 $archiver = new PartitionArchiver($DB_NAME, $DB_USER, $DB_PASS, $DB_HOST);
 $archiver->partition();
-var_dump($archiver);
+Memc::flush();
+$archiver->backupDB();
+$archiver->backupToS3();

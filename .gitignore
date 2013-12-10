@@ -6,4 +6,5 @@ logs
 htdocs/lib/logs
 htdocs/lib/irc_passwd
 .hg*
+*.7z
 
