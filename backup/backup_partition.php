@@ -7,7 +7,7 @@ require_once SITE_ROOT . "/lib/init.php";
 
 class PartitionArchiver
 {
-    var $keep = 10000;
+    var $keep = 20000;
     var $db_name;
     var $db_user;
     var $db_pass;
@@ -102,7 +102,7 @@ class PartitionArchiver
         
         $retval = 0;
         system("rm -f " . escapeshellarg($this->full_filename));
-        system($this->cmd . ' | 7z a -si ' . escapeshellarg($this->full_filename) . ' >/dev/null 2>&1', $retval);
+        system($this->cmd . ' | 7z a -m0=lzma2 -si ' . escapeshellarg($this->full_filename) . ' >/dev/null 2>&1', $retval);
         if ($retval !== 0) return false;
     }
 
