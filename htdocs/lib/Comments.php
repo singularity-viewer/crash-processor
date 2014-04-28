@@ -2,14 +2,14 @@
 
 class Comments
 {
-    function updateCommentCount($id)
+    static function updateCommentCount($id)
     {
         $q = kl_str_sql("update signature set has_comments=(select count(*) as count from comment where signature_id=!i) where id=!i", $id, $id);
         DBH::$db->query($q);
         Memc::flush();
     }
 
-    function addSignatureComment($id, $text)
+    static function addSignatureComment($id, $text)
     {
         global $S;
         $q = kl_str_sql("insert into comment (signature_id, user_id, comment) values (!i, !i, !s)", $id, $S->user_id, $text);
@@ -17,7 +17,7 @@ class Comments
         self::updateCommentCount($id);
     }
     
-    function getSignatureComments($id)
+    static function getSignatureComments($id)
     {
         $ret = array();
         $q = kl_str_sql("select c.*, u.name, u.email from comment c join users u on c.user_id = u.user_id where signature_id=!i order by id asc;", $id);
@@ -33,14 +33,14 @@ class Comments
         return $ret;
     }
     
-    function delSignatureComment($id, $del_id)
+    static function delSignatureComment($id, $del_id)
     {
         $q = kl_str_sql("delete from comment where id=!i", $del_id);
         DBH::$db->query($q);
         self::updateCommentCount($id);
     }
 
-    function renderComments($id)
+    static function renderComments($id)
     {
         global $S;
         $comments = self::getSignatureComments($id);
@@ -78,7 +78,7 @@ class Comments
     
     
     
-    function renderCommentPanel($id)
+    static function renderCommentPanel($id)
     {
 
 

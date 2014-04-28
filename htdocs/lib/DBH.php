@@ -34,7 +34,7 @@ class DBH
 		@fwrite($f, "[".date('Y-m-d H:i')."] ".$line."\n");
 	}
 	
-	function getInstance()
+	static function getInstance()
 	{
 		if (self::$db === null)
 		{

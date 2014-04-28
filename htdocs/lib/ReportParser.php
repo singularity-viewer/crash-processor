@@ -35,7 +35,7 @@ class ReportParser
 {
     static $extracted = array();
     
-    function parse($id)
+    static function parse($id)
     {
         $q = kl_str_sql("select * from raw_reports where report_id=!i", $id);
         if (!$res = DBH::$db->query($q) OR !$row = DBH::$db->fetchRow($res))

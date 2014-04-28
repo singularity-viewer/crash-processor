@@ -28,7 +28,7 @@ class CrashReport
     
     public static $all_signatures;
     
-    function htmlFrame($f, $chan, $version)
+    static function htmlFrame($f, $chan, $version)
     {
         $urlBase = "https://github.com/singularity-viewer/SingularityViewer/blob/" . self::getHash($chan, $version);
         
@@ -67,7 +67,8 @@ class CrashReport
         }
         return $ret;
     }
-    function getTotal($filter)
+
+    static function getTotal($filter)
     {
         $where = $filter->getWhere();
         $q = "select count(id) as total from reports $where";
@@ -84,7 +85,7 @@ class CrashReport
         }
     }
     
-    function getReports($filter, $fields = "id, reported, client_version, client_channel, client_arch, os, gpu, grid, region, signature_id")
+    static function getReports($filter, $fields = "id, reported, client_version, client_channel, client_arch, os, gpu, grid, region, signature_id")
     {
         $ret = array();
         $q = "select $fields from reports " . $filter->getWhere() . kl_str_sql(" order by id desc limit !i offset !i", $filter->limit, $filter->offset);
@@ -106,7 +107,7 @@ class CrashReport
         return $ret;
     }
     
-    function getReport($id)
+    static function getReport($id)
     {
         $ret = array();
         if (!$res = DBH::$db->query(kl_str_sql("select * from reports where id=!i", $id)))

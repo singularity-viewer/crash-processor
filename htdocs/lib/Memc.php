@@ -5,7 +5,7 @@ class Memc
     static $active = false;
     static $expire = 7200;
 	
-    function init()
+    static function init()
     {
 		if (!class_exists("Memcached", false)) return;
 		
@@ -24,7 +24,7 @@ class Memc
 		self::$active = true;
 	}
 	
-	function getq($q)
+	static function getq($q)
 	{
 		if (!self::$active) return false;
 
@@ -32,7 +32,7 @@ class Memc
 		return self::$mem->get($key);
 	}
 
-	function setq($q, $data)
+	static function setq($q, $data)
 	{
 		if (!self::$active) return false;
 
@@ -40,7 +40,7 @@ class Memc
 		return self::$mem->set($key, $data, self::$expire);
 	}
 	
-	function flush()
+	static function flush()
 	{
 		if (!self::$active) return false;
 		self::$mem->flush();

@@ -32,7 +32,7 @@
 class Layout
 {
   
-  function getLoginGateway()
+  static function getLoginGateway()
   {
 	$assoc_handle_expires = (int)Option::get('assoc_handle_expires');
 	$now = time();
@@ -53,7 +53,7 @@ class Layout
 	return GoogleOpenID::createRequest(URL_ROOT . "/process_login.php", $handle, true);
   }
 
-  function since($since)
+  static function since($since)
   {
     $since = time() - $since;
     $chunks = array(
@@ -175,7 +175,7 @@ class Layout
 <?php
   }
 
-  function footer()
+  static function footer()
   {
   { ?>
        <div style="margin-top:10px; padding: 5px;" class="ui-widget-header ui-corner-all">
