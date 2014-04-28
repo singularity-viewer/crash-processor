@@ -71,8 +71,8 @@ if (!DBH::$db->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
 
 Option::init();
 
-$S = new Session();
 if (!defined('NO_SESSION') && PHP_SAPI != "cli") {
+    $S = new Session();
     $S->check();
 }
 
