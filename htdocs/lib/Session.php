@@ -49,6 +49,7 @@ class Session
 		$this->validsession = false;
 		$this->cookie = "singularity_sid";
 		$this->user = new User;
+		$this->persist = new stdClass;
 		register_shutdown_function(array(&$this, 'shutdown'));
 	}
 

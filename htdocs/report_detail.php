@@ -219,16 +219,16 @@ $settings = array_merge($first, $second);
 
 <?php endif ?>
 <!-- Settings tab -->
-
+</div>
 
 <!-- comments tab -->
 <div id="tabs-6">
-</div>
-<!-- comments tab -->
-
 <div id="tabs_footer" style="max-width: 800px; padding: 10px;">
     <?php Comments::renderCommentPanel($report->signature_id) ?>
 </div>
+</div>
+<!-- comments tab -->
+
 
 </div> <!-- end of tabs panel -->
 
