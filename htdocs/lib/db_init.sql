@@ -1,101 +1,137 @@
-drop table if exists reports;
-drop table if exists raw_reports;
-drop table if exists users;
-drop table if exists options;
-drop table if exists session;
+-- MySQL dump 10.13  Distrib 5.5.37, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: singucrash
+-- ------------------------------------------------------
+-- Server version	5.5.37-0ubuntu0.14.04.1
 
-create table session(
-    sid varchar(128) not null primary key,
-    user_id integer,
-    authenticated tinyint,
-    expires datetime,
-    persist text
-);
 
-create table options(
-    name varchar(128),
-    value text
-);
+--
+-- Table structure for table `builds`
+--
 
-create table users(
-    user_id integer not null auto_increment primary key,
-    name varchar(255),
-    email varchar(255),
-    login varchar(255),
-    password varchar(255),
-    is_admin tinyint,
-    is_allowed tinyint
-);
+DROP TABLE IF EXISTS `builds`;
+CREATE TABLE `builds` (
+  `build_nr` int(11) NOT NULL DEFAULT '0',
+  `chan` varchar(64) NOT NULL DEFAULT '',
+  `version` varchar(64) DEFAULT NULL,
+  `hash` varchar(64) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`chan`,`build_nr`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table raw_reports(
-    report_id integer not null auto_increment primary key,
-    reported timestamp not null default current_timestamp,
-    processed integer not null default 0,
-    raw_data longtext
-);
+--
+-- Table structure for table `comment`
+--
 
-create table reports(
-    id integer not null primary key,
-    reported timestamp,
-    client_version varchar(32),
-    client_version_s varchar(32),
-    client_channel varchar(32),
-    client_arch varchar(16),
-    os varchar(128),
-    os_type varchar(32),
-    os_version varchar(128),
-    cpu varchar(128),
-    gpu varchar(128),
-    opengl_version varchar(128),
-    gpu_driver varchar(128),
-    ram integer,
-    grid varchar(128),
-    region varchar(128),
-    crash_reason varchar(128),
-    crash_address varchar(16),
-    crash_thread integer,
-    raw_stacktrace  longtext,
-    signature_id integer
-);
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `signature_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `commented` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
-create table signature(
-    id integer not null auto_increment primary key,
-    hash varchar(32) not null unique,
-    signature text,
-    has_comments integer
-);
+--
+-- Table structure for table `options`
+--
 
-create table comment(
-    id integer not null auto_increment primary key,
-    signature_id integer,
-    user_id integer,
-    commented timestamp not null default current_timestamp,
-    comment text
-);
+DROP TABLE IF EXISTS `options`;
+CREATE TABLE `options` (
+  `name` varchar(128) DEFAULT NULL,
+  `value` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table builds(
-    build_nr integer,
-    chan varchar(64),
-    version varchar(64),
-    hash varchar(64),
-    modified timestamp,
-    primary key(chan, build_nr)
-);
+--
+-- Table structure for table `raw_reports`
+--
 
-drop function ver_expand;
+DROP TABLE IF EXISTS `raw_reports`;
+CREATE TABLE `raw_reports` (
+  `report_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `processed` int(11) NOT NULL DEFAULT '0',
+  `raw_data` longtext,
+  PRIMARY KEY (`report_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=295850 DEFAULT CHARSET=utf8;
 
-delimiter $$
-create function ver_expand(ver varchar(32))
-returns varchar(32) deterministic
-    begin
-        declare ret varchar(32);
-        declare i int;
-        set i = 1;
-        set ret = '';
-        while (i < 5) do
-            set ret = concat(ret, lpad(SUBSTRING_INDEX(SUBSTRING_INDEX(ver , '.', i ), '.' , -1), 6, '0'));
-            set i = i + 1;
-        end while;
-       return ret;
-    end$$
-delimiter ;
+--
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+CREATE TABLE `reports` (
+  `id` int(11) NOT NULL,
+  `reported` timestamp NULL DEFAULT NULL,
+  `client_version` varchar(32) DEFAULT NULL,
+  `client_channel` varchar(32) DEFAULT NULL,
+  `os` varchar(128) DEFAULT NULL,
+  `os_type` varchar(32) DEFAULT NULL,
+  `os_version` varchar(128) DEFAULT NULL,
+  `cpu` varchar(128) DEFAULT NULL,
+  `gpu` varchar(128) DEFAULT NULL,
+  `opengl_version` varchar(128) DEFAULT NULL,
+  `gpu_driver` varchar(128) DEFAULT NULL,
+  `ram` int(11) DEFAULT NULL,
+  `grid` varchar(128) DEFAULT NULL,
+  `region` varchar(128) DEFAULT NULL,
+  `crash_reason` varchar(128) DEFAULT NULL,
+  `crash_address` varchar(16) DEFAULT NULL,
+  `crash_thread` int(11) DEFAULT NULL,
+  `raw_stacktrace` longtext,
+  `signature_id` int(11) DEFAULT NULL,
+  `client_version_s` varchar(32) DEFAULT NULL,
+  `client_arch` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_reports_region_grid` (`region`,`grid`),
+  KEY `ix_reports_signature` (`signature_id`),
+  KEY `ix_ver` (`client_version_s`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `session`
+--
+
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
+  `sid` varchar(128) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `authenticated` tinyint(4) DEFAULT NULL,
+  `expires` datetime DEFAULT NULL,
+  `persist` text,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `signature`
+--
+
+DROP TABLE IF EXISTS `signature`;
+CREATE TABLE `signature` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(32) NOT NULL,
+  `signature` text,
+  `has_comments` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hash` (`hash`)
+) ENGINE=InnoDB AUTO_INCREMENT=6032 DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `login` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `is_admin` tinyint(4) DEFAULT NULL,
+  `is_allowed` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+
+-- Dump completed on 2014-05-20  9:06:08
