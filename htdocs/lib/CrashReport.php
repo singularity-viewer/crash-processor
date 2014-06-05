@@ -30,7 +30,7 @@ class CrashReport
     
     static function htmlFrame($f, $chan, $version)
     {
-        $urlBase = "https://github.com/singularity-viewer/SingularityViewer/blob/" . self::getHash($chan, $version);
+        $urlBase = "https://github.com/replex-viewer/replex/blob/" . self::getHash($chan, $version);
         
         $ret = "";
         $link = "";
@@ -275,9 +275,9 @@ class CrashReport
             
             $f->source_file = str_replace("\\", "/", $f->source_file);
             
-            if (stristr($f->module, "singularity") !== false)
+            if (stristr($f->module, "replex") !== false)
             {
-                $f->module = "singularity";
+                $f->module = "replex";
             }
             else if (stristr($f->module, "llcommon") !== false)
             {
@@ -432,7 +432,7 @@ class CrashReport
             self::$builds_map = self::getBuildsMap();
         }
         
-        if (!self::$builds_map[$chan]) $chan = "SingularityAlpha";
+        if (!self::$builds_map[$chan]) $chan = "ReplexAlpha";
         
         if (!self::$builds_map[$chan][$version]) return "master";
         

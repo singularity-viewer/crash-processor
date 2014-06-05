@@ -205,8 +205,8 @@ class SearchFilter
         <div class="radio">
             Channel<br />
             <input type="radio" id="chan1" name="chan" value="" <?php echo !$this->chan ? 'checked="checked"' : '' ?>/><label for="chan1">All</label>
-            <input type="radio" id="chan2" name="chan" value="Singularity" <?php echo $this->chan == "Singularity" ? 'checked="checked"' : '' ?>/><label for="chan2">Singularity</label>
-            <input type="radio" id="chan3" name="chan" value="SingularityAlpha" <?php echo $this->chan == "SingularityAlpha" ? 'checked="checked"' : '' ?>/><label for="chan3">SingularityAlpha</label>
+            <input type="radio" id="chan2" name="chan" value="Replex" <?php echo $this->chan == "Replex" ? 'checked="checked"' : '' ?>/><label for="chan2">Replex</label>
+            <input type="radio" id="chan3" name="chan" value="ReplexAlpha" <?php echo $this->chan == "ReplexAlpha" ? 'checked="checked"' : '' ?>/><label for="chan3">ReplexAlpha</label>
         </div>
     </div>
 

@@ -4,7 +4,7 @@
 * This class handles sessions
 *
 * Description
-* @package Singularity Crash Processor
+* @package Replex Crash Processor
 * @author Latif Khalifa <latifer@streamgrid.net>
 * @copyright Copyright &copy; 2012, Latif Khalifa
 * 
@@ -47,7 +47,7 @@ class Session
 		$this->timeout = 604800; // 7 days
 		$this->authenticated = false;
 		$this->validsession = false;
-		$this->cookie = "singularity_sid";
+		$this->cookie = "replex_sid";
 		$this->user = new User;
 		$this->persist = new stdClass;
 		register_shutdown_function(array(&$this, 'shutdown'));

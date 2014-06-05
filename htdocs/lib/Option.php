@@ -4,7 +4,7 @@
 * Simple key-value store for various options
 *
 * Description
-* @package Singularity Crash Processor
+* @package Replex Crash Processor
 * @author Latif Khalifa <latifer@streamgrid.net>
 * @copyright Copyright &copy; 2012, Latif Khalifa
 * 

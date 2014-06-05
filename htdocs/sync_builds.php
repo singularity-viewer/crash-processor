@@ -11,7 +11,7 @@ if (PHP_SAPI != "cli")
     header("Content-Type: text/plain");
 }
 
-if (!$remote_map = json_decode(file_get_contents("http://alpha.singularityviewer.org/alpha/builds_map.php"))) return;
+if (!$remote_map = json_decode(file_get_contents("http://files.streamgrid.net/replex/builds_map.php"))) return;
 
 $existing = CrashReport::getBuildsMap();
 

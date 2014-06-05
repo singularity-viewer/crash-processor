@@ -75,7 +75,7 @@ if ($nr)
 {
     Memc::flush();
     $rp = $nr != 1 ? "reports" : "report";
-    //IRCNotify::send("#SingularityViewer", "[CrashProcessor] $nr new $rp. http://crash.singularityviewer.org/");
+    IRCNotify::send("#replex", "[CrashProcessor] $nr new $rp. http://crash.replex.org/");
 }
 
 Session::GC();

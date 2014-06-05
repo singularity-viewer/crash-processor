@@ -11,12 +11,12 @@ if (!$S->isAnonymous() && $S->user->isAllowed())
 Layout::header();
 ?>
 
-<p>This application is used for analyzing crash reports and statitstics for the Singularity
+<p>This application is used for analyzing crash reports and statitstics for the Replex
 Viewer project.</p>
 
 <p>Access to this tool is granted to the members of the development team.
 The main goal is to identify the most common problems and improve the expierience
-for the users of Singularity Viewer.</p>
+for the users of Replex Viewer.</p>
 
 <?php
 

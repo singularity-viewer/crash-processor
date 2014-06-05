@@ -4,7 +4,7 @@
 * Common http operations such as redirects, etc.
 *
 * Description
-* @package Singularity Crash Processor
+* @package Replex Crash Processor
 * @author Latif Khalifa <latifer@streamgrid.net>
 * @copyright Copyright &copy; 2012, Latif Khalifa
 * 
