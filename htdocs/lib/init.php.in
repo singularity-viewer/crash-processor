@@ -59,9 +59,9 @@ if (!defined('IMG_ROOT')) {
 
 $DB = DBH::getInstance();
 
-$DB_NAME = "singucrash";
-$DB_USER = 'singucrash';
-$DB_PASS = '-*-secrit-*-';
+$DB_NAME = 'replex_crash';
+$DB_USER = 'replex_crash';
+$DB_PASS = 'replex_sekrit';
 $DB_HOST = 'localhost';
 
 if (!DBH::$db->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
@@ -69,8 +69,17 @@ if (!DBH::$db->connect($DB_NAME, $DB_HOST, $DB_USER, $DB_PASS)) {
 	die();
 }
 
+// Google API settings
+set_include_path(get_include_path() . PATH_SEPARATOR . SITE_ROOT . '/lib');
+require_once 'Google/Client.php';
+$GoogleClientID = "get client id at google dev console";
+$GoogleClientSecret = "secret from google dev console";
+GoogleLogin::init($GoogleClientID, $GoogleClientSecret);
+
+// Options
 Option::init();
 
+// Session
 if (!defined('NO_SESSION') && PHP_SAPI != "cli") {
     $S = new Session();
     $S->check();

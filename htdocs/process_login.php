@@ -3,15 +3,14 @@
 define("SITE_ROOT", realpath(dirname(__file__)));
 require_once SITE_ROOT . "/lib/init.php";
 
-$google_response = GoogleOpenID::getResponse(); 
-$success = $google_response->success();//true or false
-if (!$success)
+
+if (!isset($_GET["code"]) || !GoogleLogin::verifyLogin($_GET["code"]))
 {
     http::redirect("/login_failed.php");
 }
 
-$user_identity = $google_response->identity();//the user's ID
-$user_email = $google_response->email();//the user's email
+$user_identity = GoogleLogin::userID();
+$user_email = GoogleLogin::userEmail();
 
 $user = User::getByLogin($user_identity);
 

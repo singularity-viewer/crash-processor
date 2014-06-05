@@ -5,6 +5,7 @@ incoming_symbols
 logs
 htdocs/lib/logs
 htdocs/lib/irc_passwd
+htdocs/lib/init.php
 .hg*
 *.7z
 
