@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   `commented` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `options`
@@ -54,7 +54,7 @@ CREATE TABLE `raw_reports` (
   `processed` int(11) NOT NULL DEFAULT '0',
   `raw_data` longtext,
   PRIMARY KEY (`report_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=295850 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `reports`
@@ -115,7 +115,7 @@ CREATE TABLE `signature` (
   `has_comments` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=6032 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `users`
@@ -131,7 +131,7 @@ CREATE TABLE `users` (
   `is_admin` tinyint(4) DEFAULT NULL,
   `is_allowed` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- Dump completed on 2014-05-20  9:06:08
