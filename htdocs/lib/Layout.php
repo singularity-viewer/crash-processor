@@ -4,9 +4,9 @@
 * Common html for all pages
 *
 * Description
-* @package Singularity Crash Processor
+* @package Replex Crash Processor
 * @author Latif Khalifa <latifer@streamgrid.net>
-* @copyright Copyright &copy; 2012, Latif Khalifa
+* @copyright Copyright &copy; 2012-2014, Latif Khalifa
 * 
 * Permission is hereby granted, free of charge, to any person obtaining
 * a copy of this software and associated documentation files
@@ -113,8 +113,23 @@ class Layout
     <link rel="stylesheet" type="text/css" href="<?php print URL_ROOT ?>/css/singularity/singularity.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <link rel="shortcut icon" href="<?php print IMG_ROOT ?>/favicon.ico" type="image/x-icon" />
-    <title>Singularity Viewer - Automated Crash Report Processing System</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="//www.replex.org//apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="//www.replex.org//apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="//www.replex.org//apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="//www.replex.org//apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="//www.replex.org//apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="//www.replex.org//apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="//www.replex.org//apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="//www.replex.org//apple-touch-icon-152x152.png">
+	<link rel="icon" type="image/png" href="//www.replex.org//favicon-196x196.png" sizes="196x196">
+	<link rel="icon" type="image/png" href="//www.replex.org//favicon-160x160.png" sizes="160x160">
+	<link rel="icon" type="image/png" href="//www.replex.org//favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="//www.replex.org//favicon-16x16.png" sizes="16x16">
+	<link rel="icon" type="image/png" href="//www.replex.org//favicon-32x32.png" sizes="32x32">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-TileImage" content="//www.replex.org/mstile-144x144.png">
+
+    <title>Replex Viewer - Automated Crash Report Processing System</title>
   </head>
   <body>
 	<script type="text/javascript">
@@ -132,10 +147,10 @@ class Layout
 
     <div style="padding-top:10px;">
       <div style="display: inline-block;">
-	    <a href="<?php echo URL_ROOT ?>"><img src="images/singularity_icon.png" width="70px" height="70px"/></a>
+	    <a href="<?php echo URL_ROOT ?>"><img src="images/replex_logo_square.png" width="70px" height="70px"/></a>
       </div>
       <div style="display: inline-block; margin-left: 15px; color: #eee; padding-bottom: 10px; vertical-align: bottom;">
-	    <a href="<?php echo URL_ROOT ?>" style="font-size: 3em; font-weight: bold;">Singularity Viewer</a>
+	    <a href="<?php echo URL_ROOT ?>" style="font-size: 3em; font-weight: bold;">Replex Viewer</a>
 	    <br/>
 	    <span style="font-size: 1.6em;">Automated Crash Report Processing</span>
       </div>
@@ -159,13 +174,13 @@ class Layout
   { ?>
        <div style="margin-top:10px; padding: 5px;" class="ui-widget-header ui-corner-all">
 	 <div style="float: left; padding: 4px;">
-	    &copy; 2013 Singularity Viewer Project
+	    &copy; 2013-2014 Replex Viewer Project
 	 </div>
 	 <div style="text-align: right;">
-	    <a class="toolbarbutton" href="http://www.singularityviewer.org/">Singularity Main Site</a>
-	    <a class="toolbarbutton" href="http://www.singularityviewer.org/about">About</a>
-	    <a class="toolbarbutton" href="http://code.google.com/p/singularity-viewer/issues/">Issue Tracker</a>
-	    <a class="toolbarbutton" href="https://github.com/singularity-viewer/SingularityViewer">Source Tracker</a>
+	    <a class="toolbarbutton" href="http://www.replex.org/">Replex Main Site</a>
+	    <a class="toolbarbutton" href="http://www.replex.org/wp/about">About</a>
+	    <a class="toolbarbutton" href="http://jira.openmetaverse.org/browse/REPLEX">Issue Tracker</a>
+	    <a class="toolbarbutton" href="https://github.com/replex-viewer/replex">Source Tracker</a>
 	 </div>
        </div> 
   </body>
