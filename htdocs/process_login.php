@@ -20,10 +20,6 @@ if (!$user)
     $user->email = $user_email;
     $user->is_admin = 0;
     $user->is_allowed = 0;
-    if ($user->email == "ek@krug.dk" || $user->email == "shyotl@gmail.com")
-    {
-        $user->is_allowed = 1;
-    }
     $user->login = $user_identity;
     if (!$user->save())
     {

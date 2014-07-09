@@ -14,7 +14,6 @@ class DBH
 
 	function log($line)
 	{
-		return;
 		static $f = false;
 		static $failed = false;
 
@@ -50,7 +49,7 @@ class DBH
 		$this->db_pass = $db_pass;
 		$this->db_user = $db_user;
 		$this->db_host = $db_host;
-
+		
 		$this->dbh = @mysql_pconnect($db_host, $db_user, $db_pass);
 
 		if (!$this->dbh) {
