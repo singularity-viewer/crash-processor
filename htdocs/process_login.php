@@ -16,6 +16,18 @@ $user = User::getByLogin($user_identity);
 
 if (!$user)
 {
+	var_dump($user_email);
+	$user_tmp = User::getByEmail($user_email);
+	if($user_tmp /* && (!$user->login) || ($user->login == "")*/)
+	{
+		$user = $user_tmp;
+		$user->login = $user_identity;
+		$user->update();
+	}
+}
+
+if (!$user)
+{
     $user = new User();
     $user->email = $user_email;
     $user->is_admin = 0;

@@ -139,7 +139,7 @@ class User
 	 */
 	public static function getByEmail($email)
 	{
-		$query = kl_str_sql('SELECT * FROM users WHERE cust_id!=1 AND email=!s', $email);
+		$query = kl_str_sql('SELECT * FROM users WHERE email=!s', $email);
 		if (!$res = DBH::$db->query($query) OR !$row = DBH::$db->fetchRow($res)) {
 			return false;
 		} else {
