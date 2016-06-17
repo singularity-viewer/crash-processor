@@ -131,7 +131,7 @@ $(function() {
     </tr>
     <tr>
         <th>Minidump</th>
-        <td><a href="download.php/singularity<?php echo (int)$report->id ?>.dmp?report_id=<?php echo (int)$report->id ?>">Download</a></td>
+        <td><a href="download.php?report_id=<?php echo (int)$report->id ?>">Download</a></td>
     </tr>
 </table>
 </div>
